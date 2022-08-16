@@ -3,7 +3,8 @@ music/
 o365_token.txt
 .idea
 
-data/
+data/*.json
+data/*.yaml
 
 config.yaml
 
