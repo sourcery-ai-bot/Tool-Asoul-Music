@@ -21,12 +21,15 @@ class infoGet(object):
             'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
         }
 
-    def getCidAndTitle(self, bvid, p=1):
+
+    def getData(self,bvid):
         url = 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid
-        ciddata = requests.get(url=url, headers=self.header).json().get("data")
-        if not ciddata:
-            raise Exception("Cid Api 访问异常... Detail:" + str(ciddata))
-        #data = requests.get(url).json()['data']
+        data = requests.get(url=url, headers=self.header).json().get("data")
+        if not data:
+            raise Exception("Api 访问异常... Detail:" + str(data))
+        return data
+
+    def getCidAndTitle(self, ciddata, p=1):
         title = ciddata['title']
         cid = ciddata['pages'][p - 1]['cid']
         return str(cid), title
@@ -36,13 +39,18 @@ class infoGet(object):
         for bvid in bvList:
             item = []
             if len(bvid) == 12:
-                cid, title = self.getCidAndTitle(bvid)
+                data=self.getData(bvid)
+                cid, title = self.getCidAndTitle(data)
                 item.append(bvid)
             else:
-                cid, title = self.getCidAndTitle(bvid[:12], int(bvid[13:]))
+                data=self.getData(bvid[:12], int(bvid[13:]))
+                cid, title = self.getCidAndTitle(data)
                 item.append(bvid[:12])
             item.append(cid)
-            item.append(title)
+            item.append(title) # 2
+            item.append(data.get("owner")["name"])
+            item.append(data.get("pic"))
+
             # item.append('mool_' + str(id + 1))
             infoList.append(item)
         # print(infoList)
@@ -51,7 +59,7 @@ class infoGet(object):
 
     def getMutipleInformation(self, bvid):
         url = 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid
-        data = requests.get(url).json()['data']
+        data = requests.get(url).json().get('data')
         # base_title = data['title']
         infoList = []
         for page in data['pages']:

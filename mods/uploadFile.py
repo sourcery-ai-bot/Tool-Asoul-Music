@@ -4,6 +4,7 @@ import os
 from mods.urlGet import infoGet
 from mods.fileGet import fileGet
 from pathlib import Path
+
 # from tqdm.notebook import trange
 
 # 接受数据格式如下
@@ -19,18 +20,24 @@ BVList=[
 class Upload(object):
     def __init__(self):
         self.IsDebug = False
+
     #    def callback(self,filePath):
     #        print(filePath)
-    def deal_audio_list(self, bvid_list, savePath, callb,local):
+    def deal_audio_list(self, bvid_list, savePath, callb, local):
         infoList = infoGet().getInformation(bvid_list)
-        sath = str(Path().cwd()) + savePath
+        ath = str(Path().cwd()) + savePath
         for item in infoList:
             # print('Downloader Start!')
+            sath = ath +"/"+ item[0]
             st = time.time()
-            musicPath = fileGet().getAudio(item, sath)
+            DownPath = fileGet().getAudio(item, sath)
+            convertPath = fileGet().convertAudio(item, DownPath, sath)
+            # https: // api.bilibili.com / x / web - interface / view?bvid = BV1ip4y1D7iY
+
             bvid, cid, title = item[0], item[1], item[2]
             if not local:
-               callb.postAudio(musicPath, title + '\n' + 'https://www.bilibili.com/video/' + str(bvid) + "\n #MusicFinder #Automatic #V5 ", title)  # +
+                callb.postAudio(convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
+                    bvid) + "\n #MusicFinder #Automatic #V5 ", title)  # +
             # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
             ed = time.time()
             # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')

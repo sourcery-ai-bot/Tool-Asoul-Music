@@ -5,3 +5,5 @@ pycrypto
 pyTelegramBotAPI
 O365
 feedparser
+ffmpeg
+mutagen

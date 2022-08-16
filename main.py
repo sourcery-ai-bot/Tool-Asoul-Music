@@ -76,8 +76,8 @@ if rss.get('statu'):
         else:
             print("RSS No New Data")
     except BaseException as arg:
-        push.sendMessage('Failed post ' + str(bvlist) + '\n Exception:' + str(arg))
-        WrongGet.append(str(Nowtime)+'\n 任务错误' + str(bvlist) + str(arg))
+        push.sendMessage('Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
+        WrongGet.append(str(Nowtime)+'\n 任务错误' + str(rssBvidItem) + str(arg))
     finally:
         shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
         # mLog("err", "Fail " + n + '  -' + u).wq()
