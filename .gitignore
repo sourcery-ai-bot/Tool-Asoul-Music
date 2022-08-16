@@ -3,6 +3,8 @@ music/
 o365_token.txt
 .idea
 
+data/
+
 config.yaml
 
 # Byte-compiled / optimized / DLL files
