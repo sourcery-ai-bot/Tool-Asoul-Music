@@ -1,6 +1,7 @@
 # MY
 music/
 o365_token.txt
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
