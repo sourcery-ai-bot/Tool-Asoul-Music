@@ -88,8 +88,15 @@ class fileGet(object):
         """
         音频格式转换为flac格式，需要安装ffmpeg
         """
+        from pydub import AudioSegment
+        movie = AudioSegment.from_file(audio_path)
+        channels = movie.channels  # 声道数
+        # sample_width = movie.sample_width  # 采样大小
+        frame_rate = movie.frame_rate  # 帧率
         musicPath = audio_path + '.flac'
-        os.system("ffmpeg -y -i " + audio_path + " -ac 2 -ab 192000 -ar 44100" + " " + musicPath)
+        movie.export(musicPath, format="flac",
+                     parameters=["-ac", str(channels), "-ar", str(frame_rate)])
+        # os.system("ffmpeg -y -i " + audio_path + " -ac 2 -ab 192000 -ar 44100" + " " + musicPath)
         os.remove(audio_path)
         if setCover:
             try:

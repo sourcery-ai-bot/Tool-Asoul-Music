@@ -1,9 +1,10 @@
 requests
 pyyaml==5.4.1
 pathlib
-pycrypto
 pyTelegramBotAPI
 O365
 feedparser
 ffmpeg
+pydub
 mutagen
+pycrypto
