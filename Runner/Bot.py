@@ -14,7 +14,6 @@ from Runner.EventLib import Tool
 from Runner.Network.Uploader import Upload
 
 
-
 class CallingCounter(object):
     def __init__(self):
         pass
@@ -44,7 +43,6 @@ class ClinetBot(object):
         except Exception as e:
             print("Wrong:life.pkl do not exist" + str(e))
             return False
-
 
     def run(self, pushService, config):
         if config.ClientBot.statu:
@@ -82,7 +80,19 @@ class ClinetBot(object):
             @bot.message_handler(content_types=['text'])
             def replay(message, items=None):
                 userID = message.from_user.id
-                Name = message.from_user.first_name
+                if str(userID) == config.ClientBot.owner:
+                    try:
+                        # chat_id = message.chat.id
+                        command = message.text
+                        if command == "off":
+                            joblib.dump("off", 'life.pkl')
+                            bot.reply_to(message, 'success！')
+                        if command == "on":
+                            joblib.dump("on", 'life.pkl')
+                            bot.reply_to(message, 'success！')
+                    except Exception as e:
+                        bot.reply_to(message, "Wrong:" + str(e))
+                # Name = message.from_user.first_name
                 commands = message.text
                 ids, tp = biliParse().get_bili_id(commands)
                 if tp == 0:
@@ -112,7 +122,5 @@ class ClinetBot(object):
 
                         else:
                             Tool().console.print("Bot已经关闭", style='blue')
-
-
 
             bot.infinity_polling()
