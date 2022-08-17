@@ -313,7 +313,7 @@ class fileGet(object):
         try:
             encoding = audio["ENCODING"]
         except Exception as e:
-            print(e)
+            # print(e)
             encoding = ""
             audio.delete()
         # add FLAC tag data
