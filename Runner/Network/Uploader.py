@@ -110,14 +110,14 @@ class Robot(object):
         self.BOT.send_message(objectID, str(msg))
 
     def postDoc(self, objectID, files):
-        if os.path.exists(files):
+        if Path(str(files)).exists():
             doc = open(files, 'rb')
             self.BOT.send_document(objectID, doc)
             doc.close()
             return files
 
     def postVideo(self, objectID, files, source, name):
-        if os.path.exists(files):
+        if Path(str(files)).exists():
             video = open(files, 'rb')
             self.BOT.send_video(objectID, video, source, name, name)
             # '#音乐MV #AUTOrunning '+str(source)+"   "+name
@@ -127,7 +127,7 @@ class Robot(object):
             return files
 
     def postAudio(self, objectID, files, source, name):
-        if os.path.exists(files):
+        if Path(str(files)).exists():
             audio = open(files, 'rb')
             self.BOT.send_audio(objectID, audio, source, name, name)
             # '#音乐提取 #AUTOrunning '+str(source)+"   "+name

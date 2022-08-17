@@ -220,7 +220,7 @@ class fileGet(object):
                 try:
                     CoverPath = self.getCover(item, dirname)
                     musicPath = self.setCover(CoverPath, musicPath)
-                    musicPath = self.setInfo(item, musicPath)
+                    musicPath, is_ok = self.setInfo(item, musicPath)
                 except Exception as e:
                     print(e)
 
@@ -327,6 +327,6 @@ class fileGet(object):
         try:
             audio.save()
         except BaseException:
-            return "", False
+            return musicPath, False
         else:
             return musicPath, True
