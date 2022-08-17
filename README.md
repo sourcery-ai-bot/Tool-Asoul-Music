@@ -40,7 +40,9 @@
 
 #### 自动
 
-`curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh`
+```
+curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh
+```
 
 #### 手动
 **Python 3.8 或更高版本,但3.10不能构建加密库** 
