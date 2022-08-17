@@ -242,6 +242,14 @@ ClientBot: { statu: False, owner: 'xxxxxxx' }
 ```yaml
 channalId: -youchannalIDnumberhere
 ```
+### 机器人
+
+后台运行
+
+```shell
+nohup python main.py > output.log 2>&1 &
+```
+
 
 ------------------
 
