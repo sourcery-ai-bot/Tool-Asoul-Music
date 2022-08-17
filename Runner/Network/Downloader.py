@@ -10,6 +10,7 @@ import random
 from PIL import Image
 from pathlib import Path
 
+
 class infoGet(object):
     def __init__(self):
         self.debug = False
@@ -170,7 +171,7 @@ class fileGet(object):
             ('Connection', 'keep-alive'),
         ]
         MusicName = os.path.join(dirname, title + '.mp3')
-        if not Path(MusicName+'.flac').exists():
+        if not Path(MusicName + '.flac').exists():
             if int(audioSong.get('data').get("timelength")) > 360000:
                 is_too_lang = True
             else:
@@ -197,7 +198,7 @@ class fileGet(object):
                 # print(str(round(ed-st,2))+' seconds download finish:',title)
                 self.random_sleep()
         else:
-            MusicName=MusicName + '.flac'
+            MusicName = MusicName + '.flac'
             is_too_lang = False
             pass
         return MusicName, is_too_lang

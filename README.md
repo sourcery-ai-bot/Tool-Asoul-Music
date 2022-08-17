@@ -244,12 +244,23 @@ channalId: -youchannalIDnumberhere
 ```
 ### 机器人
 
-后台运行
+**后台运行**
 
 ```shell
 nohup python3 main.py > output.log 2>&1 &
 ```
 
+**查看进程**
+
+```
+ps -aux|grep python3
+```
+
+**终止进程**
+
+```
+kill -9  进程号
+```
 
 ------------------
 
