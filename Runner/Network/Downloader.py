@@ -197,6 +197,7 @@ class fileGet(object):
                 # print(str(round(ed-st,2))+' seconds download finish:',title)
                 self.random_sleep()
         else:
+            MusicName=MusicName + '.flac'
             is_too_lang = False
             pass
         return MusicName, is_too_lang
