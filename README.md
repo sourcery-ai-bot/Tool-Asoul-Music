@@ -247,7 +247,7 @@ channalId: -youchannalIDnumberhere
 后台运行
 
 ```shell
-nohup python main.py > output.log 2>&1 &
+nohup python3 main.py > output.log 2>&1 &
 ```
 
 
