@@ -197,6 +197,7 @@ class fileGet(object):
                 # print(str(round(ed-st,2))+' seconds download finish:',title)
                 self.random_sleep()
         else:
+            is_too_lang = False
             pass
         return MusicName, is_too_lang
 
@@ -210,17 +211,18 @@ class fileGet(object):
         # sample_width = movie.sample_width  # 采样大小
         frame_rate = movie.frame_rate  # 帧率
         musicPath = audio_path + '.flac'
-        movie.export(musicPath, format="flac",
-                     parameters=["-ac", str(channels), "-ar", str(frame_rate)])
-        # os.system("ffmpeg -y -i " + audio_path + " -ac 2 -ab 192000 -ar 44100" + " " + musicPath)
-        os.remove(audio_path)
-        if setCover:
-            try:
-                CoverPath = self.getCover(item, dirname)
-                musicPath = self.setCover(CoverPath, musicPath)
-                musicPath = self.setInfo(item, musicPath)
-            except Exception as e:
-                print(e)
+        if not Path(musicPath).exists():
+            movie.export(musicPath, format="flac",
+                         parameters=["-ac", str(channels), "-ar", str(frame_rate)])
+            # os.system("ffmpeg -y -i " + audio_path + " -ac 2 -ab 192000 -ar 44100" + " " + musicPath)
+            os.remove(audio_path)
+            if setCover:
+                try:
+                    CoverPath = self.getCover(item, dirname)
+                    musicPath = self.setCover(CoverPath, musicPath)
+                    musicPath = self.setInfo(item, musicPath)
+                except Exception as e:
+                    print(e)
 
         return musicPath
 

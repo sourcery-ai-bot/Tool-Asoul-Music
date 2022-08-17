@@ -25,7 +25,7 @@ class Upload(object):
     #    def callback(self,filePath):
     #        print(filePath)
     def deal_audio_list(self, tarID, bvid_list, savePath, botService, local):
-        from rich.progress import track
+        # from rich.progress import track
         infoList = infoGet().getInformation(bvid_list)
         ath = str(Path().cwd()) + savePath
         for item in infoList:
@@ -42,8 +42,8 @@ class Upload(object):
                        botService.postAudio(tarID, convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
                         bvid) + "\n #MusicConvert " + str(self.desc), title)  # +
                 # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
-                    except:
-                        raise Exception("Cant post")
+                    except Exception as e:
+                        raise Exception("Cant post"+str(e))
                 # ed = time.time()
                 # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')
 

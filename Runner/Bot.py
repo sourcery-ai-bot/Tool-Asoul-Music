@@ -45,6 +45,7 @@ class ClinetBot(object):
             print("Wrong:life.pkl do not exist" + str(e))
             return False
 
+
     def run(self, pushService, config):
         if config.ClientBot.statu:
             import telebot
@@ -53,16 +54,8 @@ class ClinetBot(object):
             count = CallingCounter()
             joblib.dump("on", 'life.pkl')
 
-            @bot.message_handler(commands=['start'])
-            def send_welcome(message):
-                bot.reply_to(message, "发送链接，我会发送回音频")
-
-            @bot.message_handler(commands=['about'])
-            def send_about(message):
-                bot.reply_to(message, "https://github.com/sudoskys/Tool-Asoul-Music")
-
-            @bot.message_handler(content_types=['text'])
-            def send_about(message):
+            """
+            def master(message):
                 userID = message.from_user.id
                 if str(userID) == config.ClientBot.owner:
                     try:
@@ -76,13 +69,22 @@ class ClinetBot(object):
                             bot.reply_to(message, 'success！')
                     except Exception as e:
                         bot.reply_to(message, "Wrong:" + str(e))
+            """
+
+            @bot.message_handler(commands=['start'])
+            def send_welcome(message):
+                bot.reply_to(message, "发送链接，我会发送回音频")
+
+            @bot.message_handler(commands=['about'])
+            def send_about(message):
+                bot.reply_to(message, "https://github.com/sudoskys/Tool-Asoul-Music")
 
             @bot.message_handler(content_types=['text'])
             def replay(message, items=None):
                 userID = message.from_user.id
                 Name = message.from_user.first_name
-                command = message.text
-                ids, tp = biliParse().get_bili_id(command)
+                commands = message.text
+                ids, tp = biliParse().get_bili_id(commands)
                 if tp == 0:
                     if count.get(userID) < 30:
                         if ClinetBot.life():
@@ -95,7 +97,7 @@ class ClinetBot(object):
                                     Upload(config.desc).deal_audio_list(userID, rssBvidItem, '/music', pushService,
                                                                         local=False)
                                 else:
-                                    print("RSS No New Data")
+                                    print("No New Data")
                             except BaseException as arg:
                                 try:
                                     pushService.sendMessage(userID,
@@ -110,5 +112,7 @@ class ClinetBot(object):
 
                         else:
                             Tool().console.print("Bot已经关闭", style='blue')
+
+
 
             bot.infinity_polling()
