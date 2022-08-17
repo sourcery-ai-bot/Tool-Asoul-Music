@@ -312,21 +312,23 @@ class fileGet(object):
         audio = FLAC(musicPath)
         try:
             encoding = audio["ENCODING"]
-        except:
+        except Exception as e:
+            print(e)
             encoding = ""
             audio.delete()
         # add FLAC tag data
         audio["TITLE"] = item[2]
         audio["ARTIST"] = item[3]
         audio["ALBUM"] = item[3]
-        audio["YEAR"] = 2022
+        audio["YEAR"] = str(2022)
         # audio["DESCRIPTION"] = '::> Don\'t believe the hype! <::'
         if len(encoding) != 0:
             audio["ENCODING"] = encoding
         audio.pprint()
         try:
             audio.save()
-        except BaseException:
+        except BaseException as e:
+            print(e)
             return musicPath, False
         else:
             return musicPath, True

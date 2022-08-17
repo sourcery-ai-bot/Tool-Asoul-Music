@@ -102,7 +102,8 @@ class checkRss(object):
                    print("推送错误")
                 # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))
             finally:
-                shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
+                if not DontPush:
+                   shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
                 # mLog("err", "Fail " + n + '  -' + u).wq()
 
         else:
