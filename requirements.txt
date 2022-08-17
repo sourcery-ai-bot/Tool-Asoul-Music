@@ -7,4 +7,6 @@ feedparser
 ffmpeg
 pydub
 mutagen
+pillow
+rich
 pycrypto

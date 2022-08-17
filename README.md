@@ -38,14 +38,17 @@
 
 ### 1. 安装要求
 
-**Python 3.8 或更高版本** 
+**Python 3.8 或更高版本,但3.10不能构建加密库** 
 ```shell
 python -m pip install --upgrade pip
 pip3 install -r requirements.txt
 ```
 
->FFmpeg环境（非必要）
-> [ffmpeg 环境下载](https://ffmpeg.org/download.html#get-packages)。 （仓库Action使用 https://github.com/marketplace/actions/setup-ffmpeg ）
+FFmpeg环境
+
+pip 已装
+
+> （仓库Action使用 https://github.com/marketplace/actions/setup-ffmpeg ）
 
 
 
@@ -221,12 +224,6 @@ DataCallback : {statu: True, UserIdToken: 'xxxxxxxxxxxxxxxxx'}
 - [1 -参数详情](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/search/search_request.md#%E5%88%86%E7%B1%BB%E6%90%9C%E7%B4%A2web%E7%AB%AF)
 - 2.请务必先start机器人对话
 
-*填充数据*
-
-只填充不推送数据.
-```
-python3 dataInit.py 
-```
 
 
 *生成Token*
@@ -277,29 +274,28 @@ Github action 可以每天6:20运行一次流程（这需要手动取消yaml文�
 ### 目录结构描述
 ```
 .
-├── authkey
-│    └── onedrive.token  // onedrive的token密文
-├── config.yaml  // 配置文件
-├── data
-│    └── history.yaml   // 历史记录
-├── LICENSE  // 协议
-├── main.py  // 主程序
-├── mods
-│    ├── core.py  // 基础函数
-│    ├── fileGet.py  // 文件获取
-│    ├── locker.py   // 加密安全算法
-│    ├── Runner    // api相关
-│    │    └── renew.py
-│    ├── uploadFile.py  // 推送
-│    └── urlGet.py  // 解析cid
-├── rank   // 队列实现
-│    └── waiter
-│    │   └── init.lck  // 定位目录的锚点
-│    └── content.yaml  // 队列索引
-├── README.md   //介绍
-└── requirements.txt 
+├── config_exp.yaml # 示例文件
+├── cron.sh # cron用
+├── data  # 数据目录，智能生成
+│   ├── history.yaml
+│   └── RssData.json
+├── docs # 文档，如何加密
+│   └── newToken.md
+├── LICENSE
+├── main.py  # 运行文件
+├── README.md # 自述文件
+├── requirements.txt # 依赖说明
+├── Runner  # 运行库
+│   ├── DataParse.py
+│   ├── EventLib.py
+│   ├── Network
+│   ├── __pycache__
+│   └── Task.py
+└── setup.sh  # 服务器用
+
 
 ```
+
 
 ### TODO
 - [x] 重构代码结构
@@ -307,7 +303,7 @@ Github action 可以每天6:20运行一次流程（这需要手动取消yaml文�
 - [x] 优化实现流程
 - [x] 支持手动添加
 - [ ] 支持同步OD盘
-- [ ] 重构 1 次
+- [x] 重构 1 次
 - [ ] 重构 2 次
 - [ ] 重构 3 次
 
