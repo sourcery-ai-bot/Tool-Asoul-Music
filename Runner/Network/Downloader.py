@@ -8,7 +8,7 @@ import requests
 import random
 
 from PIL import Image
-
+from pathlib import Path
 
 class infoGet(object):
     def __init__(self):
@@ -170,28 +170,35 @@ class fileGet(object):
             ('Connection', 'keep-alive'),
         ]
         MusicName = os.path.join(dirname, title + '.mp3')
-        urllib.request.install_opener(opener)
+        if not Path(MusicName+'.flac').exists():
+            if int(audioSong.get('data').get("timelength")) > 360000:
+                is_too_lang = True
+            else:
+                is_too_lang = False
+                urllib.request.install_opener(opener)
 
-        def hook(count, block_size, total_size):
-            """
-            @count:        已经下载的数据块
-            @block_size:    数据块大小
-            @total_size:    文件大小
-            """
-            progress.update(task_id, total=int(total_size))
-            progress.start_task(task_id)
-            progress.update(task_id, advance=block_size)
-            # print('%0f%%' % (100.0 * count * block_size / total_size))
+                def hook(count, block_size, total_size):
+                    """
+                    @count:        已经下载的数据块
+                    @block_size:    数据块大小
+                    @total_size:    文件大小
+                    """
+                    progress.update(task_id, total=int(total_size))
+                    progress.start_task(task_id)
+                    progress.update(task_id, advance=block_size)
+                    # print('%0f%%' % (100.0 * count * block_size / total_size))
 
-        task_id = progress.add_task("Download..", filename=item[0], start=False)
-        with progress:
-             urllib.request.urlretrieve(url=audioUrl, filename=MusicName, reporthook=hook)
+                task_id = progress.add_task("Download..", filename=item[0], start=False)
+                with progress:
+                    urllib.request.urlretrieve(url=audioUrl, filename=MusicName, reporthook=hook)
 
-        # ed = time.time()
-        # 回调函数
-        # print(str(round(ed-st,2))+' seconds download finish:',title)
-        self.random_sleep()
-        return MusicName
+                # ed = time.time()
+                # 回调函数
+                # print(str(round(ed-st,2))+' seconds download finish:',title)
+                self.random_sleep()
+        else:
+            pass
+        return MusicName, is_too_lang
 
     def convertAudio(self, item, audio_path, dirname, setCover=True):
         """

@@ -10,3 +10,4 @@ mutagen
 pillow
 rich
 pycrypto
+joblib

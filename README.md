@@ -204,27 +204,29 @@ ${{ secrets.GITHUB_EMAIL }}
 *USE config.yaml*
 
 ```yaml
-Lock: True
+Lock: False
 channalId: -1001741448769
-botToken: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx5xxxxxxxxxxxxxxxxxxxxxxxxxxxx5'
-#when you select lock:true,you must use aes to encode your ***Token! 
-onedrive: {statu: True, target: authkey/onedrive.token} 
-search: {duration: '1', keyword: ASOUL 原创曲, order: pubdate, page: '1', search_type: video,  tids_1: '3', tids_2: '28'}
-RSS : {statu: True, RssAddressToken: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx5xxxxxxxxxxxxxxxxxxxxxxxxxxxx5'}
-DataCallback : {statu: True, UserIdToken: 'xxxxxxxxxxxxxxxxx'}
-
+desc: 'music from @somename'
+botToken: '8c259c4dc1xxxxxxxxxxxxxxxxxxxxx050b44453a0'
+#when you select lock:true,you must use aes to encode all Token! And Dont push your token to github directly. 
+onedrive: {statu: True, target: authkey/onedrive.token}
+search: {duration: '1', keyword: xxxxxx, order: pubdate, page: '1', search_type: video,  tids_1: '3', tids_2: '28'}
+RSS : {statu: True, RssAddressToken: 'https://rssxxxxxxxxxxxxxxxxx'}
+DataCallback : {statu: True, UserIdToken: 'bxxxxxxxxxx79'}
+ClientBot :  {statu: False, owner: 'xxxxxxx'}
 ```
 
-| Key           |     Value     |    Des       |
-| ------------- | ------------- | ------------- |
-| Lock  | `boolen` | if `True` then ***Token string will be decode by AESTOOL in addition  |
-| channalId  | `-xxxxxxxx` | USE tg@getidsbot  |
-| botToken  | `xxxxxxxx` | USE tg@BotFather  |
-| onedrive  | `xxxxxxxx` | un do 还没做  |
-| search  | {dura...ids_2: '28'} | see PS[1] |
-| RSS  | `xxxxxxxx` | statu mean start use and,token must be the link from [Rsshub](docs.rsshub.app) #bili-->fav list https://xxxxx.com/bilibili/fav/xxx/xx |
-|DataCallback | `statu: True, UserIdToken: ''` | 发送执行的缓存数据(比如服务到期但是没有同步数据see PS[2])。 Token是用户ID或者某些频道ID（需要拉机器人入频道） use tg@getidsbot |
-
+| Key          | Value                              | Des                                                                                                                                   |
+|--------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| Lock         | `boolen`                           | if `True` then ***Token string will be decode by AESTOOL in addition                                                                  |
+| channalId    | `-xxxxxxxx`                        | USE tg@getidsbot                                                                                                                      |
+| botToken     | `xxxxxxxx`                         | USE tg@BotFather                                                                                                                      |
+| onedrive     | `xxxxxxxx`                         | un do 还没做                                                                                                                             |
+| search       | {dura...ids_2: '28'}               | see PS[1]                                                                                                                             |
+| RSS          | `xxxxxxxx`                         | statu mean start use and,token must be the link from [Rsshub](docs.rsshub.app) #bili-->fav list https://xxxxx.com/bilibili/fav/xxx/xx |
+| DataCallback | `statu: True, UserIdToken: ''`     | 发送执行的缓存数据(比如服务到期但是没有同步数据see PS[2])。 Token是用户ID或者某些频道ID（需要拉机器人入频道） use tg@getidsbot                                                    |
+| ClientBot    | `{statu: False, owner: 'xxxxxxx'}` | 交互式机器人！可以在线部署                                                                                                                         |
+|desc| `some desc`                        | 发送消息时的描述                                                                                                                              |
 
 **PS**
 

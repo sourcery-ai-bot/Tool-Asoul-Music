@@ -18,12 +18,13 @@ BVList=[
 
 
 class Upload(object):
-    def __init__(self):
+    def __init__(self, desc):
         self.IsDebug = False
+        self.desc = desc
 
     #    def callback(self,filePath):
     #        print(filePath)
-    def deal_audio_list(self, bvid_list, savePath, callb, local):
+    def deal_audio_list(self, tarID, bvid_list, savePath, botService, local):
         from rich.progress import track
         infoList = infoGet().getInformation(bvid_list)
         ath = str(Path().cwd()) + savePath
@@ -31,19 +32,20 @@ class Upload(object):
             # print('Downloader Start!')
             sath = ath + "/" + item[0]
             # st = time.time()
-            DownPath = fileGet().getAudio(item, sath)
-            convertPath = fileGet().convertAudio(item, DownPath, sath)
-            # https: // api.bilibili.com / x / web - interface / view?bvid = BV1ip4y1D7iY
-            bvid, cid, title = item[0], item[1], item[2]
-            if not local:
-                try:
-                   callb.postAudio(convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
-                    bvid) + "\n #MusicFinder #Automatic #V5 ", title)  # +
-            # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
-                except:
-                    raise Exception("Cant post")
-            # ed = time.time()
-            # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')
+            DownPath, is_too_lang = fileGet().getAudio(item, sath)
+            if not is_too_lang:
+                convertPath = fileGet().convertAudio(item, DownPath, sath)
+                # https: // api.bilibili.com / x / web - interface / view?bvid = BV1ip4y1D7iY
+                bvid, cid, title = item[0], item[1], item[2]
+                if not local:
+                    try:
+                       botService.postAudio(tarID, convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
+                        bvid) + "\n #MusicConvert " + str(self.desc), title)  # +
+                # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
+                    except:
+                        raise Exception("Cant post")
+                # ed = time.time()
+                # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')
 
 
 # Upload().deal_audio_list(BVList,'/music')
@@ -107,28 +109,28 @@ class Robot(object):
     def sendMessage(self, objectID, msg):
         self.BOT.send_message(objectID, str(msg))
 
-    def postDoc(self, objectID, file):
-        if os.path.exists(file):
-            doc = open(file, 'rb')
+    def postDoc(self, objectID, files):
+        if os.path.exists(files):
+            doc = open(files, 'rb')
             self.BOT.send_document(objectID, doc)
             doc.close()
-            return file
+            return files
 
-    def postVideo(self, objectID, file, source, name):
-        if os.path.exists(file):
-            video = open(file, 'rb')
+    def postVideo(self, objectID, files, source, name):
+        if os.path.exists(files):
+            video = open(files, 'rb')
             self.BOT.send_video(objectID, video, source, name, name)
             # '#音乐MV #AUTOrunning '+str(source)+"   "+name
             # 显示要求为MP4--https://mlog.club/article/5018822
             # print("============Already upload this video============")
             video.close()
-            return file
+            return files
 
-    def postAudio(self, objectID, file, source, name):
-        if os.path.exists(file):
-            audio = open(file, 'rb')
+    def postAudio(self, objectID, files, source, name):
+        if os.path.exists(files):
+            audio = open(files, 'rb')
             self.BOT.send_audio(objectID, audio, source, name, name)
             # '#音乐提取 #AUTOrunning '+str(source)+"   "+name
             # print("============ALready upload this flac============")
             audio.close()
-            return file
+            return files

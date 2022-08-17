@@ -1,5 +1,6 @@
 Lock: False
 channalId: -1001741448769
+desc: 'music from @somename'
 botToken: '8c259c4dc1863586f479xxxxxxxxxxxxxxxx9a830c6d3a050b44453a0'
 #when you select lock:true,you must use aes to encode all Token! And Dont push your token to github directly. 
 
@@ -7,3 +8,4 @@ onedrive: {statu: True, target: authkey/onedrive.token}
 search: {duration: '1', keyword: xxxxxx, order: pubdate, page: '1', search_type: video,  tids_1: '3', tids_2: '28'}
 RSS : {statu: True, RssAddressToken: 'https://rssxxxxxxxxxxxxxxxxx'}
 DataCallback : {statu: True, UserIdToken: 'bxxxxxxxxxx79'}
+ClientBot :  {statu: False, owner: 'xxxxxxx'}

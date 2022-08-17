@@ -91,7 +91,7 @@ class checkRss(object):
             try:
                 if not len(rssBvidItem) == 0:
                     HaveNew = True
-                    Upload().deal_audio_list(rssBvidItem, '/music', pushService, DontPush)
+                    Upload(config.desc).deal_audio_list(config.channalId, rssBvidItem, '/music', pushService, DontPush)
                 else:
                     print("RSS No New Data")
             except BaseException as arg:

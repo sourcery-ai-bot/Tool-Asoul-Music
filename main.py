@@ -22,8 +22,14 @@ config = Read(str(Path.cwd()) + "/config.yaml").get()
 # 注册机器人
 pushService = Robot(config.botToken)
 
-# ===== 逻辑区 ======
+# ===== 交互型逻辑区 =====
 
+# Bot
+from Runner.Bot import ClinetBot
+
+ClinetBot().run(config)
+
+# ===== 推送型逻辑区 =====
 
 # Rss推送
 is_new_Rss = checkRss().run(pushService, config, DontPush=True)
@@ -33,10 +39,6 @@ cat = searchBili(config)
 cat.find()
 is_new_Find = cat.doTask(pushService)
 
-
-
 # Backup data!
 if is_new_Rss or is_new_Find:
     feedBack.run(config, pushService)
-
-
