@@ -216,17 +216,17 @@ DataCallback : {statu: True, UserIdToken: 'bxxxxxxxxxx79'}
 ClientBot :  {statu: False, owner: 'xxxxxxx'}
 ```
 
-| Key          | Value                              | Des                                                                                                                                   |
-|--------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Lock         | `boolen`                           | if `True` then ***Token string will be decode by AESTOOL in addition                                                                  |
-| channalId    | `-xxxxxxxx`                        | USE tg@getidsbot                                                                                                                      |
-| botToken     | `xxxxxxxx`                         | USE tg@BotFather                                                                                                                      |
-| onedrive     | `xxxxxxxx`                         | un do 还没做                                                                                                                             |
-| search       | {dura...ids_2: '28'}               | see PS[1]                                                                                                                             |
+| Key          | Value                              | Des                                                                                                                                  |
+|--------------|------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Lock         | `boolen`                           | if `True` then ***Token string will be decode by AESTOOL in addition                                                                 |
+| channalId    | `-xxxxxxxx`                        | USE tg@getidsbot                                                                                                                     |
+| botToken     | `xxxxxxxx`                         | USE tg@BotFather                                                                                                                     |
+| onedrive     | `xxxxxxxx`                         | undo 还没做                                                                                                                             |
+| search       | {dura...ids_2: '28'}               | see PS[1]                                                                                                                            |
 | RSS          | `xxxxxxxx`                         | statu mean start use and,token must be the link from [Rsshub](docs.rsshub.app) #bili-->fav list https://xxxxx.com/bilibili/fav/xxx/xx |
-| DataCallback | `statu: True, UserIdToken: ''`     | 发送执行的缓存数据(比如服务到期但是没有同步数据see PS[2])。 Token是用户ID或者某些频道ID（需要拉机器人入频道） use tg@getidsbot                                                    |
-| ClientBot    | `{statu: False, owner: 'xxxxxxx'}` | 交互式机器人！可以在线部署                                                                                                                         |
-|desc| `some desc`                        | 发送消息时的描述                                                                                                                              |
+| DataCallback | `statu: True, UserIdToken: ''`     | 发送执行的缓存数据(比如服务到期但是没有同步数据see PS[2])。 Token是用户ID或者某些频道ID（需要拉机器人入频道） use tg@getidsbot                                                   |
+| ClientBot    | `{statu: False, owner: 'xxxxxxx'}` | 交互式机器人！可以在线部署  ,owner 为 主人ID                                                                                                         |
+|desc| `some desc`                        | 发送消息时的描述                                                                                                                             |
 
 **PS**
 
