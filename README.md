@@ -38,6 +38,11 @@
 
 ### 1. 安装要求
 
+#### 自动
+
+`curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh`
+
+#### 手动
 **Python 3.8 或更高版本,但3.10不能构建加密库** 
 ```shell
 python -m pip install --upgrade pip
@@ -46,7 +51,7 @@ pip3 install -r requirements.txt
 
 FFmpeg环境
 
-pip 已装
+- pip 已装
 
 > （仓库Action使用 https://github.com/marketplace/actions/setup-ffmpeg ）
 
