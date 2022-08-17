@@ -30,7 +30,7 @@ class CallingCounter(object):
         return self.count[key]
 
 
-class ClinetBot:
+class ClinetBot(object):
     def __init__(self):
         pass
 
@@ -92,7 +92,8 @@ class ClinetBot:
                                     rssBvidItem.append(biliParse().get_bili_id(str(v))[0])
                             try:
                                 if not len(rssBvidItem) == 0:
-                                    Upload(config.desc).deal_audio_list(userID, rssBvidItem, '/music', pushService, local=False)
+                                    Upload(config.desc).deal_audio_list(userID, rssBvidItem, '/music', pushService,
+                                                                        local=False)
                                 else:
                                     print("RSS No New Data")
                             except BaseException as arg:
