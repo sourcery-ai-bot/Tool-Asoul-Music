@@ -12,7 +12,7 @@ import joblib
 from Runner.DataParse import biliParse
 from Runner.EventLib import Tool
 from Runner.Network.Uploader import Upload
-from main import pushService
+
 
 
 class CallingCounter(object):
@@ -45,7 +45,7 @@ class ClinetBot(object):
             print("Wrong:life.pkl do not exist" + str(e))
             return False
 
-    def run(self, config):
+    def run(self, pushService, config):
         if config.ClientBot.statu:
             import telebot
             import joblib

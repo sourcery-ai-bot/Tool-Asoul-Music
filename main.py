@@ -27,7 +27,7 @@ pushService = Robot(config.botToken)
 # Bot
 from Runner.Bot import ClinetBot
 
-ClinetBot().run(config)
+ClinetBot().run(pushService,config)
 
 # ===== 推送型逻辑区 =====
 
