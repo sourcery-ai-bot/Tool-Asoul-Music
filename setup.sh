@@ -27,7 +27,7 @@ if [ ! -d "$dir" ]; then
 			;;
 
 	    [nN][oO]|[nN])
-      if [ ! -f "$data" ]; then
+      if [ ! -d "$data" ]; then
          echo "cant find ${data} ,we will reinstall app...."
          rm -rf Tool-Asoul-Music
          Gitpull
