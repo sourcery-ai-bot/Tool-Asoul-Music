@@ -43,14 +43,13 @@ Gitpull() {
   )
 }
 
-
 dependenceInit() {
   cd Tool-Asoul-Music || (
     echo "Cant find !?"
     exit 1
   )
   pip3 install --upgrade pip
-   pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt.bak || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt.bak || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
 }
 dataBack="$(pwd)/tmp"
@@ -81,6 +80,23 @@ run() {
     fi
     # 询问
     read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?" input
+    read -r -p "Danger：请问，是否清除你的音乐（包含备份）？Do you want to clean exist backup music and cache music？${dir} y/n?" musicis
+    case $musicis in
+    [yY][eE][sS] | [yY])
+      rm -rf "${dir}/music"
+      rm -rf "${dataBack}/music"
+      echox skyBlue "删除了所有的备份：clean all done"
+      ;;
+    [nN][oO] | [nN])
+      # 备份音乐
+      if [ -d "${dir}/music" ]; then
+        echox skyBlue "备份音乐缓存：backup ${dir}/music to ${dataBack} ...."
+        cp -rf "${dir}/music" "$dataBack"
+      else
+        echox skyBlue "你没有音乐缓存可以备份：mo cache music...."
+      fi
+      ;;
+    esac
     case $input in
     [nN][oO] | [nN])
       echox red "We will reinstall a pure app...."
@@ -92,12 +108,16 @@ run() {
       rm -rf "${dir}"
       Gitpull
       if [ -f "${dataBack}/config.yaml" ]; then
-        echox green "Reuse the config.yaml from ${dataBack}...."
+        echox green "恢复配置文件：Reuse the config.yaml from ${dataBack}...."
         cp -f "${dataBack}/config.yaml" "$dir" #文件夹目录 文件夹上级
       fi
       if [ -d "${dataBack}/data" ]; then
-        echox green "Reuse the run data from ${dataBack}...."
+        echox green "恢复数据库：Reuse the run data from ${dataBack}...."
         cp -rf "${dataBack}/data" "$dir" #文件夹目录 文件夹上级
+      fi
+      if [ -d "${dataBack}/music" ]; then
+        echox green "恢复音乐缓存：Reuse the music from ${dataBack}...."
+        cp -rf "${dataBack}/music" "$dir" #文件夹目录 文件夹上级
       fi
       dependenceInit || exit 1
       ;;
