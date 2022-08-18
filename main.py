@@ -28,7 +28,7 @@ if args.init:
 # 初始化
 Check().run()
 config = Read(str(Path.cwd()) + "/config.yaml").get(args)
-if config.Version:
+if config.get("Version"):
     Tool().console.print("完成初始化:" + config.Version, style='blue')
 # 注册机器人
 pushService = Robot(config.botToken)
