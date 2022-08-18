@@ -1,13 +1,15 @@
 #!/bin/bash
 Gitpull(){
   git clone https://github.com/sudoskys/Tool-Asoul-Music
-  cd Tool-Asoul-Music || pip3 install --upgrade pip ||pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+  cd Tool-Asoul-Music || (echo "Cant find !?";exit 1)
+  pip3 install --upgrade pip ; pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
   echo "Ok"
 }
 dataBack="$(pwd)/Music_data"
 dir="/Tool-Asoul-Music"
 data="/Tool-Asoul-Music/data"
 echo "=============Setup============"
+run(){
 if [ ! -d "$dir" ]; then
   Gitpull
   else
@@ -18,7 +20,7 @@ if [ ! -d "$dir" ]; then
 			echo "Remove it"
 			rm -r Tool-Asoul-Music
       Gitpull
-      exit 1
+      exit 0
 			;;
 
 	    [nN][oO]|[nN])
@@ -36,7 +38,7 @@ if [ ! -d "$dir" ]; then
          cp -r "$dataBack" "$data"
          echo "Down....."
       fi
-			exit 1
+			exit 0
 			;;
 
 	    *)
@@ -44,7 +46,9 @@ if [ ! -d "$dir" ]; then
 			;;
 	esac
 fi
+}
 
+run || { echo "command failed"; exit 1; }
 
 
 
