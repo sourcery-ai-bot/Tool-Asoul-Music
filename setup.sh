@@ -140,3 +140,9 @@ run() {
 run || {
   echox skyBlue "command failed"
 }
+
+cd "$(pwd)" && rm setup.sh
+
+
+
+
