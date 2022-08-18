@@ -18,7 +18,7 @@ from pathlib import Path
 
 # 接收参数
 parser = argparse.ArgumentParser(description='运行命令')
-parser.add_argument('--password', '-p', help='密码，非必要参数，只有配置开启才会使用')
+parser.add_argument('--password', '-p', help='密码，非必要参数，只有配置开启才会使用', default="")
 parser.add_argument('--init', '-i', help='是否执行数据初始化，避免大量推送', default=False)
 # parser.add_argument('--test', '-b', help='body 属性，必要参数', required=True)
 args = parser.parse_args()
