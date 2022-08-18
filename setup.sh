@@ -79,7 +79,6 @@ run() {
       cp -rf "$data" "$dataBack" #文件夹目录 文件夹上级
     fi
     # 询问
-    read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?" input
     read -r -p "Danger：请问，是否清除你的音乐（包含备份）？Do you want to clean exist backup music and cache music？${dir} y/n?" musicis
     case $musicis in
     [yY][eE][sS] | [yY])
@@ -97,6 +96,7 @@ run() {
       fi
       ;;
     esac
+    read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?" input
     case $input in
     [nN][oO] | [nN])
       echox red "We will reinstall a pure app...."
