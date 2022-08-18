@@ -138,3 +138,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/rank/content.yaml
+/rank/waiter/init.lck
