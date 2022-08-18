@@ -137,7 +137,11 @@ class biliParse(object):
         av_id = re.search(r"(av.*?).{10}", urls)
         ids = [av_id if av_id else bv_id]
         if ids:
-            return ids.group(0)
+            strs = re.search(r"\W", ids[0].group(0))
+            if strs:
+                return False
+            else:
+                return ids[0].group(0)
         else:
             return False
 
