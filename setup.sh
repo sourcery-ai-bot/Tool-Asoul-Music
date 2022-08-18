@@ -42,6 +42,8 @@ Gitpull() {
     echo "Cant find !?"
     exit 1
   )
+}
+dependenceInit() {
   pip3 install --upgrade pip
   pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
@@ -55,6 +57,7 @@ run() {
   if [ ! -d "$dir" ]; then
     echox skyBlue "初始化:No found ${dir}，init, setup..."
     Gitpull
+    dependenceInit
   else
     # 初始化备份文件夹
     if [ ! -d "$dataBack" ]; then
@@ -78,6 +81,7 @@ run() {
       echox red "We will reinstall a pure app...."
       rm -rf "${dir}"
       Gitpull
+      dependenceInit
       ;;
     [yY][eE][sS] | [yY])
       rm -rf "${dir}"
@@ -90,6 +94,7 @@ run() {
         echox green "Reuse the run data from ${dataBack}...."
         cp -rf "${dataBack}/data" "$dir" #文件夹目录 文件夹上级
       fi
+      dependenceInit
       exit 0
       ;;
     *)
