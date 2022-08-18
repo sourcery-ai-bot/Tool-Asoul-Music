@@ -2,7 +2,8 @@
 Gitpull(){
   git clone https://github.com/sudoskys/Tool-Asoul-Music
   cd Tool-Asoul-Music || (echo "Cant find !?";exit 1)
-  pip3 install --upgrade pip ; pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+  pip3 install --upgrade pip
+  pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echo "pip failed,please check it"
   echo "Ok"
 }
 dataBack="$(pwd)/Music_data"
@@ -20,7 +21,7 @@ if [ ! -d "$dir" ]; then
   case $input in
 	    [yY][eE][sS]|[yY])
 			echo "Remove it"
-			rm -r Tool-Asoul-Music
+			rm -rf Tool-Asoul-Music
       Gitpull
       exit 0
 			;;
@@ -28,16 +29,16 @@ if [ ! -d "$dir" ]; then
 	    [nN][oO]|[nN])
       if [ ! -f "$data" ]; then
          echo "cant find ${data} ,we will reinstall app...."
-         rm -r Tool-Asoul-Music
+         rm -rf Tool-Asoul-Music
          Gitpull
          else
          mkdir "$dataBack"
          echo "copy data...."
-         cp -r "$data" "$dataBack"
-         rm -r Tool-Asoul-Music
+         cp -rf "$data" "$dataBack"
+         rm -rf Tool-Asoul-Music
          Gitpull
          mkdir "$data"
-         cp -r "$dataBack" "$data"
+         cp -rf "$dataBack" "$data"
          echo "Down....."
       fi
 			exit 0
