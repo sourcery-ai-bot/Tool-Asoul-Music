@@ -94,8 +94,7 @@ run() {
         echox green "Reuse the run data from ${dataBack}...."
         cp -rf "${dataBack}/data" "$dir" #文件夹目录 文件夹上级
       fi
-      dependenceInit
-      exit 0
+      dependenceInit || exit 1
       ;;
     *)
       echox skyBlue "Invalid input"
@@ -106,5 +105,4 @@ run() {
 
 run || {
   echox skyBlue "command failed"
-  exit 1
 }
