@@ -45,18 +45,18 @@ Gitpull() {
 
 pipInit() {
   libs=(requests
-pyyaml==5.4.1
-pathlib
-pyTelegramBotAPI
-O365
-feedparser
-ffmpeg
-pydub
-mutagen
-pillow
-rich
-pycrypto
-joblib)
+    pyyaml==5.4.1
+    pathlib
+    pyTelegramBotAPI
+    O365
+    feedparser
+    ffmpeg
+    pydub
+    mutagen
+    pillow
+    rich
+    pycrypto
+    joblib)
   pip3 install --upgrade pip
   for i in "${libs[@]}"; do
     echo " ---------- 正在安装 ---------------> $i "
