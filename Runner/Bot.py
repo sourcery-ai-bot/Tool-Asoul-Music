@@ -42,6 +42,7 @@ class ClinetBot(object):
                 return False
         except Exception as e:
             print("Wrong:life.pkl do not exist" + str(e))
+            joblib.dump("off", 'life.pkl')
             return False
 
     def run(self, pushService, config):
