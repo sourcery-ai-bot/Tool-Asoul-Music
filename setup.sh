@@ -9,8 +9,10 @@ dataBack="$(pwd)/Music_data"
 dir="$(pwd)/Tool-Asoul-Music"
 data="$(pwd)/Tool-Asoul-Music/data"
 echo "=============Setup============"
+
 run(){
 if [ ! -d "$dir" ]; then
+  echo "No found ${dir}，setup..."
   Gitpull
   else
   echo "Attention!!"
