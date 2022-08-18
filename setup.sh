@@ -86,9 +86,9 @@ run() {
     [yY][eE][sS] | [yY])
       rm -rf "${dir}"
       Gitpull
-      if [ -f "{$dataBack}/config.yaml" ]; then
+      if [ -f "${dataBack}/config.yaml" ]; then
         echox green "Reuse the config.yaml from ${dataBack}...."
-        cp -f "{$dataBack}/config.yaml" "$dir" #文件夹目录 文件夹上级
+        cp -f "${dataBack}/config.yaml" "$dir" #文件夹目录 文件夹上级
       fi
       if [ -d "${dataBack}/data" ]; then
         echox green "Reuse the run data from ${dataBack}...."
