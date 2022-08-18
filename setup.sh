@@ -82,14 +82,17 @@ run() {
       cp -rf "$data" "$dataBack" #文件夹目录 文件夹上级
     fi
     # 询问
-    read -r -p "Danger：请问，是否清除你的音乐（包含备份）？Do you want to clean exist backup music and cache music？${dir} y/n?" musicis
+    read -r -p "Danger：请问，是否保留你的音乐（包含备份）？Do you want to clean exist backup music and cache music？${dir} y/n?[default=y]" musicis
+    if [ -z "${musicis}" ]; then
+      musicis=y
+    fi
     case $musicis in
-    [yY][eE][sS] | [yY])
+    [nN][oO] | [nN])
       rm -rf "${dir}/music"
       rm -rf "${dataBack}/music"
       echox skyBlue "删除了所有的备份：clean all done"
       ;;
-    [nN][oO] | [nN])
+    [yY][eE][sS] | [yY])
       # 备份音乐
       if [ -d "${dir}/music" ]; then
         echox skyBlue "备份音乐缓存：backup ${dir}/music to ${dataBack} ...."
@@ -99,7 +102,10 @@ run() {
       fi
       ;;
     esac
-    read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?" input
+    read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?[default=y]" input
+    if [ -z "${input}" ]; then
+      input=y
+    fi
     case $input in
     [nN][oO] | [nN])
       echox red "We will reinstall a pure app...."
