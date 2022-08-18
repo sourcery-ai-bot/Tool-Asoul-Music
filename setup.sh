@@ -6,8 +6,8 @@ Gitpull(){
   echo "Ok"
 }
 dataBack="$(pwd)/Music_data"
-dir="/Tool-Asoul-Music"
-data="/Tool-Asoul-Music/data"
+dir="$(pwd)/Tool-Asoul-Music"
+data="$(pwd)/Tool-Asoul-Music/data"
 echo "=============Setup============"
 run(){
 if [ ! -d "$dir" ]; then

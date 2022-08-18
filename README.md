@@ -54,8 +54,11 @@ Tool-Asoul-Music 是一个使用 Python 编写的自动化的音乐推送程序�
 
 ```
 curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh
-```
 
+```
+```
+curl -LO https://ghproxy.com/https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh
+```
 **编辑config.yaml**
 
 ```bash
