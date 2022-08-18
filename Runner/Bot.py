@@ -95,15 +95,15 @@ class ClinetBot(object):
                         bot.reply_to(message, "Wrong:" + str(e))
                 # Name = message.from_user.first_name
                 commands = message.text
-                ids, tp = biliParse().get_bili_id(commands)
-                if tp == 0:
+                ids = biliParse().biliIdGet(commands)
+                if ids:
                     if count.get(userID) < 30:
                         if ClinetBot.life():
                             rssBvidItem = [ids]
                             bot.reply_to(message, "OK,NewTask:" + str(rssBvidItem))
                             if items:
                                 for k, v in items.items():
-                                    rssBvidItem.append(biliParse().get_bili_id(str(v))[0])
+                                    rssBvidItem.append(biliParse().biliIdGet(str(v)))
                             try:
                                 if not len(rssBvidItem) == 0:
                                     Upload(config.desc).deal_audio_list(userID, rssBvidItem, '/music', pushService,

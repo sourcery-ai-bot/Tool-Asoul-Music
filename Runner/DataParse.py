@@ -63,7 +63,7 @@ class biliParse(object):
             'Host': 'api.bilibili.com',
             'Upgrade-Insecure-Requests': '1',
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
-            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
+            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=Cgv5QB;ID=CgQIsv5QB0',
         }
 
     def b32_url(self, bili_url):
@@ -128,7 +128,18 @@ class biliParse(object):
             bili_type = 0 if bili_id[0:2] == "BV" else 1
         # print(bili_id) # id在这里
         """ 0.视频 1.动态 2.专栏 """
+
         return bili_id, bili_type  # id, type
+
+    def biliIdGet(self, urls):
+        urls = self.b32_url(urls) if "b23.tv" in urls else urls
+        bv_id = re.search(r'(BV.*?).{10}', urls)
+        av_id = re.search(r"(av.*?).{10}", urls)
+        ids = [av_id if av_id else bv_id]
+        if ids:
+            return ids.group(0)
+        else:
+            return False
 
 
 class AESlock(object):
