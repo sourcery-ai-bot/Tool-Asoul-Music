@@ -99,11 +99,11 @@ class ClinetBot(object):
                 if ids:
                     if count.get(userID) < 30:
                         if ClinetBot.life():
-                            rssBvidItem = [ids]
+                            rssBvidItem = ids
                             bot.reply_to(message, "OK,NewTask:" + str(rssBvidItem))
                             if items:
                                 for k, v in items.items():
-                                    rssBvidItem.append(biliParse().biliIdGet(str(v)))
+                                    rssBvidItem.append(biliParse().biliIdGet(str(v))[0])
                             try:
                                 if not len(rssBvidItem) == 0:
                                     Upload(config.desc).deal_audio_list(userID, rssBvidItem, '/music', pushService,

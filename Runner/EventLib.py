@@ -89,7 +89,7 @@ class checkRss(object):
             rssBvidItem = []
             if items:
                 for k, v in items.items():
-                    rssBvidItem.append(biliParse().biliIdGet(str(v)))
+                    rssBvidItem.append(biliParse().biliIdGet(str(v))[0])
             try:
                 if not len(rssBvidItem) == 0:
                     HaveNew = True

@@ -108,6 +108,23 @@ class biliParse(object):
             r += tr[bv_id[s[i]]] * 58 ** i
         return (r - add) ^ xor
 
+    def AV_BV(self, av):
+        av = "".join(list(filter(str.isdigit, str(av))))
+        Str = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
+        Dict = {}
+        for i in range(58):
+            Dict[Str[i]] = i
+        s = [11, 10, 3, 8, 4, 6, 2, 9, 5, 7]
+        xor = 177451812
+        add = 100618342136696320
+        ret = av
+        av = int(av)
+        av = (av ^ xor) + add
+        r = list('BV          ')
+        for i in range(10):
+            r[s[i]] = Str[av // 58 ** i % 58]
+        return ''.join(r)
+
     def add_url(self, b_oid, b_type):
         """ 拼接url or https://api.bilibili.com/x/v2/reply?&type={}&oid={}&pn={} """
         return_url = f"https://api.bilibili.com/x/v2/reply/main?&type={b_type}&oid={b_oid}&next="
@@ -132,16 +149,28 @@ class biliParse(object):
         return bili_id, bili_type  # id, type
 
     def biliIdGet(self, urls):
+        # urls = self.b32_url(urls) if "b23.tv" in urls else urls
         urls = self.b32_url(urls) if "b23.tv" in urls else urls
-        bv_id = re.search(r'(BV.*?).{10}', urls)
-        av_id = re.search(r"(av.*?).{10}", urls)
-        ids = [av_id if av_id else bv_id]
+        Av = []
+        b = re.findall(r'(?:bv.*?).{10}', urls)
+        B = re.findall(r'(?:BV.*?).{10}', urls)
+        bv = B + b
+        for i in bv:
+            Av.append(self.BV_AV(i))
+        a = re.findall(r"(?:av.*?).{9}", urls)
+        A = re.findall(r"(?:AV.*?).{9}", urls)
+        deal = Av + a + A
+        Bv = []
+        for i in deal:
+            Bv.append(self.AV_BV(i))
+        ids = Bv
+        # print(ids)
         if ids:
-            strs = re.search(r"\W", ids[0].group(0))
-            if strs:
-                return False
-            else:
-                return ids[0].group(0)
+            for i in ids:
+                strs = re.search(r"\W", str(i))
+                if strs:
+                    ids = False
+            return list(set(ids))
         else:
             return False
 
