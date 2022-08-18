@@ -39,7 +39,7 @@ echox() {
 Gitpull() {
   git clone https://github.com/sudoskys/Tool-Asoul-Music.git || (
     echox yellow "Git failed,try pull from mirror"
-    git clone https://gitclone.com/github.com/sudoskys/Tool-Asoul-Music.git
+    git clone https://hub.fastgit.xyz/sudoskys/Tool-Asoul-Music
   )
 }
 
