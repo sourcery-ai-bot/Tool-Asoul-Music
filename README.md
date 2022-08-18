@@ -53,12 +53,12 @@ Tool-Asoul-Music 是一个使用 Python 编写的自动化的音乐推送程序�
 ### 安装
 
 ```
-curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh
+curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh && sh setup.sh
 
 ```
 或者
 ```
-curl -LO https://raw.fastgit.org/sudoskys/Tool-Asoul-Music/main/setup.sh; sh setup.sh
+curl -LO https://raw.fastgit.org/sudoskys/Tool-Asoul-Music/main/setup.sh && sh setup.sh
 ```
 
 **编辑config.yaml**
