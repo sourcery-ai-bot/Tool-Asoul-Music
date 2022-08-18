@@ -57,7 +57,11 @@ run() {
     Gitpull
   else
     if [ ! -d "$data" ]; then
-      mkdir "$dataBack"
+      if [ ! -d "$dataBack" ]; then
+         mkdir "$dataBack"
+      else
+         echox skyBlue "Already exist ${dataBack}"
+      fi
       echo "Auto Backup data to ${dataBack}...."
       cp -rf "$data" "$dataBack" #文件夹目录 文件夹上级
     fi
