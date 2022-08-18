@@ -53,7 +53,6 @@ class ClinetBot(object):
             bot = telebot.TeleBot(config.botToken)
             count = CallingCounter()
             joblib.dump("on", 'life.pkl')
-
             """
             def master(message):
                 userID = message.from_user.id
@@ -125,5 +124,6 @@ class ClinetBot(object):
 
                         else:
                             Tool().console.print("Bot已经关闭", style='blue')
-
+                    else:
+                        bot.reply_to(message, "服务维护中")
             bot.infinity_polling()
