@@ -39,43 +39,18 @@ echox() {
 Gitpull() {
   git clone https://github.com/sudoskys/Tool-Asoul-Music.git || (
     echox yellow "Git failed,try pull from mirror"
-    git clone https://hub.fastgit.xyz/sudoskys/Tool-Asoul-Music
+    git clone https://gitclone.com/github.com/sudoskys/Tool-Asoul-Music.git
   )
 }
 
-pipInit() {
-  libs=(
-    requests
-    pyyaml==5.4.1
-    pathlib
-    pyTelegramBotAPI
-    O365
-    feedparser
-    ffmpeg
-    pydub
-    mutagen
-    pillow
-    rich
-    pycrypto
-    joblib
-    )
-  pip3 install --upgrade pip
-  for i in "${libs[@]}"; do
-    echo " ---------- 正在安装 ---------------> $i "
-    pip3 install "$i" -i https://pypi.tuna.tsinghua.edu.cn/simple
-    # shellcheck disable=SC2181
-    while [ "$?" -ne 0 ]; do
-      echox red " ---------- 安装失败，跳过了 ---------------> $i "
-    done
-  done
-}
+
 dependenceInit() {
   cd Tool-Asoul-Music || (
     echo "Cant find !?"
     exit 1
   )
   pip3 install --upgrade pip
-  pipInit || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
+   pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt.bak || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
 }
 dataBack="$(pwd)/tmp"
