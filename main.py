@@ -22,6 +22,8 @@ parser.add_argument('--password', '-p', help='密码，非必要参数，只有�
 parser.add_argument('--init', '-i', help='是否执行数据初始化，避免大量推送', default=False)
 # parser.add_argument('--test', '-b', help='body 属性，必要参数', required=True)
 args = parser.parse_args()
+if args.init:
+    Tool().console.print("==数据初始化==")
 
 # 初始化
 Check().run()
@@ -39,12 +41,12 @@ ClinetBot().run(pushService, config)
 # ===== 推送型逻辑区 =====
 
 # Rss推送
-is_new_Rss = checkRss().run(pushService, config, DontPush=True, dataInit=False)  # 本地推送且不开启填充数据测试
+is_new_Rss = checkRss().run(pushService, config, DontPush=True, dataInit=args.init)  # 本地推送且不开启填充数据测试
 
 # 自动搜索
 cat = searchBili(config)
 cat.find()
-is_new_Find = cat.doTask(pushService, dataInit=True)  # 开启填充数据测试
+is_new_Find = cat.doTask(pushService, dataInit=args.init)  # 开启填充数据测试
 
 # Backup data!
 if is_new_Rss or is_new_Find:
