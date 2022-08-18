@@ -43,8 +43,8 @@ Gitpull() {
     exit 1
   )
   pip3 install --upgrade pip
-  pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echo "===pip failed,please check it====="
-  echo "Ok"
+  pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
+  echox yellow "========Down=========="
 }
 dataBack="$(pwd)/tmp"
 dir="$(pwd)/Tool-Asoul-Music"
@@ -53,45 +53,45 @@ echo "=============Setup============"
 
 run() {
   if [ ! -d "$dir" ]; then
-    echox skyBlue "No found ${dir}，setup..."
+    echox skyBlue "初始化:No found ${dir}，init, setup..."
     Gitpull
   else
-    if [ ! -d "$data" ]; then
-      if [ ! -d "$dataBack" ]; then
-         mkdir "$dataBack"
-      else
-         echox skyBlue "Already exist ${dataBack}"
-      fi
-      echo "Auto Backup data to ${dataBack}...."
+    # 初始化备份文件夹
+    if [ ! -d "$dataBack" ]; then
+      echox skyBlue "初始化备份文件夹：init ${dataBack}...."
+      mkdir "$dataBack"
+    fi
+    # 备份配置文件
+    if [ -f "${dir}/config.yaml" ]; then
+      echox skyBlue "备份配置文件：backup ${dir}/config.yaml to ${dataBack} ...."
+      cp -f "${dir}/config.yaml" "$dataBack"
+    fi
+    # 备份运行数据
+    if [ -d "$data" ]; then
+      echox skyBlue "备份运行数据：Copy run data to ${dataBack}...."
       cp -rf "$data" "$dataBack" #文件夹目录 文件夹上级
     fi
-    echox skyBlue "Attention!!"
-    read -r -p "默认使用旧的数据吗？Do you want to update with using your old data?[Y/n] " input
+    # 询问
+    read -r -p "请问，是否使用可能存在的备份配置？Do you want to update your app with probably exist old data？${dir} y/n?" input
     case $input in
     [nN][oO] | [nN])
-      echox skyBlue "Remove it"
-      rm -rf Tool-Asoul-Music
+      echox red "We will reinstall a pure app...."
+      rm -rf "${dir}"
       Gitpull
-      exit 0
       ;;
     [yY][eE][sS] | [yY])
-      if [ ! -d "$data" ]; then
-        echox skyBlue "you haven t have ${data} ？？？....we will reinstall app...."
-        rm -rf Tool-Asoul-Music
-        Gitpull
-      else
-        mkdir "$dataBack"
-        echox skyBlue "Copy old data to app...."
-        cp -rf "$data" "$dataBack" #文件夹目录 文件夹上级
-        rm -rf Tool-Asoul-Music
-        Gitpull
-        # mkdir "$data"
+      rm -rf "${dir}"
+      Gitpull
+      if [ -f "{$dataBack}/config.yaml" ]; then
+        echox green "Reuse the config.yaml from ${dataBack}...."
+        cp -f "{$dataBack}/config.yaml" "$dir" #文件夹目录 文件夹上级
+      fi
+      if [ -d "${dataBack}/data" ]; then
+        echox green "Reuse the run data from ${dataBack}...."
         cp -rf "${dataBack}/data" "$dir" #文件夹目录 文件夹上级
-        echox skyBlue "All Down....."
       fi
       exit 0
       ;;
-
     *)
       echox skyBlue "Invalid input"
       ;;
