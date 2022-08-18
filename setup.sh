@@ -37,13 +37,15 @@ echox() {
   esac
 }
 Gitpull() {
-  git clone https://github.com/sudoskys/Tool-Asoul-Music
+  git clone https://github.com/sudoskys/Tool-Asoul-Music.git || (
+    echox yellow "Git failed,try pull from mirror"
+    git clone https://gitclone.com/github.com/sudoskys/Tool-Asoul-Music.git)
+}
+dependenceInit() {
   cd Tool-Asoul-Music || (
     echo "Cant find !?"
     exit 1
   )
-}
-dependenceInit() {
   pip3 install --upgrade pip
   pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
