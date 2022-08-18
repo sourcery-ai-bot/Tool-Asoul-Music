@@ -1,0 +1,12 @@
+requests
+pyyaml==5.4.1
+pathlib
+pyTelegramBotAPI
+O365
+feedparser
+ffmpeg
+pydub
+mutagen
+pillow
+rich
+joblib

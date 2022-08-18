@@ -39,7 +39,33 @@ echox() {
 Gitpull() {
   git clone https://github.com/sudoskys/Tool-Asoul-Music.git || (
     echox yellow "Git failed,try pull from mirror"
-    git clone https://gitclone.com/github.com/sudoskys/Tool-Asoul-Music.git)
+    git clone https://gitclone.com/github.com/sudoskys/Tool-Asoul-Music.git
+  )
+}
+
+pipInit() {
+  libs=(requests
+pyyaml==5.4.1
+pathlib
+pyTelegramBotAPI
+O365
+feedparser
+ffmpeg
+pydub
+mutagen
+pillow
+rich
+pycrypto
+joblib)
+  pip3 install --upgrade pip
+  for i in "${libs[@]}"; do
+    echo " ---------- 正在安装 ---------------> $i "
+    pip3 install "$i" -i https://pypi.tuna.tsinghua.edu.cn/simple
+    # shellcheck disable=SC2181
+    while [ "$?" -ne 0 ]; do
+      echox red " ---------- 安装失败，跳过了 ---------------> $i "
+    done
+  done
 }
 dependenceInit() {
   cd Tool-Asoul-Music || (
@@ -47,7 +73,7 @@ dependenceInit() {
     exit 1
   )
   pip3 install --upgrade pip
-  pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
+  pipInit || echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
 }
 dataBack="$(pwd)/tmp"
