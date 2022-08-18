@@ -39,11 +39,11 @@ class Upload(object):
                 bvid, cid, title = item[0], item[1], item[2]
                 if not local:
                     try:
-                       botService.postAudio(tarID, convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
-                        bvid) + "\n #MusicConvert " + str(self.desc), title)  # +
-                # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
+                        botService.postAudio(tarID, convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
+                            bvid) + "\n #MusicConvert " + str(self.desc), title)  # +
+                    # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
                     except Exception as e:
-                        raise Exception("Cant post"+str(e))
+                        raise Exception("Cant post" + str(e))
                 # ed = time.time()
                 # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')
 
@@ -108,6 +108,9 @@ class Robot(object):
 
     def sendMessage(self, objectID, msg):
         self.BOT.send_message(objectID, str(msg))
+
+    def replyMessage(self, objectID, msg, reply_id):
+        self.BOT.send_message(objectID, str(msg), reply_to_message_id=reply_id)
 
     def postDoc(self, objectID, files):
         if Path(str(files)).exists():

@@ -99,6 +99,7 @@ class ClinetBot(object):
                     if count.get(userID) < 30:
                         if ClinetBot.life():
                             rssBvidItem = [ids]
+                            bot.reply_to(message, "OK,NewTask:"+str(rssBvidItem))
                             if items:
                                 for k, v in items.items():
                                     rssBvidItem.append(biliParse().get_bili_id(str(v))[0])
@@ -110,7 +111,7 @@ class ClinetBot(object):
                                     print("No New Data")
                             except BaseException as arg:
                                 try:
-                                    pushService.sendMessage(userID,
+                                    bot.reply_to(message,
                                                             'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(
                                                                 arg))
                                 except BaseException as e:
