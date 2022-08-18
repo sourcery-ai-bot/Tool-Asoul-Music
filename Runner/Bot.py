@@ -99,7 +99,7 @@ class ClinetBot(object):
                     if count.get(userID) < 30:
                         if ClinetBot.life():
                             rssBvidItem = [ids]
-                            bot.reply_to(message, "OK,NewTask:"+str(rssBvidItem))
+                            bot.reply_to(message, "OK,NewTask:" + str(rssBvidItem))
                             if items:
                                 for k, v in items.items():
                                     rssBvidItem.append(biliParse().get_bili_id(str(v))[0])
@@ -112,8 +112,8 @@ class ClinetBot(object):
                             except BaseException as arg:
                                 try:
                                     bot.reply_to(message,
-                                                            'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(
-                                                                arg))
+                                                 'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(
+                                                     arg))
                                 except BaseException as e:
                                     print("推送错误")
                                 # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))

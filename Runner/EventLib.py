@@ -5,7 +5,7 @@ import os
 import shutil
 import pathlib
 from pathlib import Path
-from rich.progress import track
+# from rich.progress import track
 from rich.console import Console
 
 
@@ -25,7 +25,7 @@ class searchBili(object):
                 print('resign new task--> ' + key)
                 # apiRenew().cancelTask(key)  # 取消任务
 
-    def doTask(self, push):
+    def doTask(self, push, dataInit=False):
         HaveNew = False
         from Runner.Task import apiRenew
         from Runner.Network.Uploader import Upload
@@ -58,7 +58,9 @@ class searchBili(object):
                                 bvlist.append(u)
                         time.sleep(1)
                         try:
-                            Upload().deal_audio_list(bvlist, '/music', push, local=False)
+                            if not dataInit:
+                                Upload(self.config.desc).deal_audio_list(self.config.channalId, bvlist, '/music', push,
+                                                                         local=False)
                         except BaseException as arg:
                             if not bvlist:
                                 bvlist = 'Unknow'
@@ -76,7 +78,7 @@ class checkRss(object):
     def __init__(self):
         pass
 
-    def run(self, pushService, config, DontPush=True):
+    def run(self, pushService, config, DontPush=True, dataInit=False):
         HaveNew = False
         from Runner.DataParse import rssParse, biliParse
         from Runner.Network.Uploader import Upload
@@ -91,19 +93,21 @@ class checkRss(object):
             try:
                 if not len(rssBvidItem) == 0:
                     HaveNew = True
-                    Upload(config.desc).deal_audio_list(config.channalId, rssBvidItem, '/music', pushService, DontPush)
+                    if not dataInit:
+                        Upload(config.desc).deal_audio_list(config.channalId, rssBvidItem, '/music', pushService,
+                                                            DontPush)
                 else:
                     print("RSS No New Data")
             except BaseException as arg:
                 try:
-                   pushService.sendMessage(config.channalId,
-                                        'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
+                    pushService.sendMessage(config.channalId,
+                                            'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
                 except BaseException as e:
-                   print("推送错误")
+                    print("推送错误")
                 # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))
             finally:
                 if not DontPush:
-                   shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
+                    shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
                 # mLog("err", "Fail " + n + '  -' + u).wq()
 
         else:
@@ -162,13 +166,13 @@ class Read(object):
         data = yamler().read(paths)
         self.config = Tool().dictToObj(data)
 
-    def get(self):
+    def get(self, args):
         # 解密 机器人 token
         if self.config.Lock:
             Tool().console.print("加密模式开启", style='blue')
             from Runner.DataParse import AESlock
-            import sys
-            self.keyword = sys.argv[1]
+            # import sys
+            self.keyword = args.password
             if self.keyword:
                 self.config.botToken = AESlock().decrypt(str(self.keyword), self.config.botToken.encode('utf-8'))
             else:
@@ -298,8 +302,3 @@ class doTarGz(object):
         for name in names:
             tar.extract(name, file_name + "_files/")
         tar.close()
-
-
-
-
-

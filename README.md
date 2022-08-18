@@ -13,12 +13,10 @@
 
 <h2 align="center">Tool-Asoul-Music</h2>
 
-
 *A tool for telegram channal delivery,and it can help you to deliver the audio file by asking bilibili api.*
 
-Tool-Asoul-Music 是一个使用 Python 编写的自动化的音乐推送程序， 可以 本地运行，交互式机器人部署， 自动抓取 或 手动指定收藏夹Rss地址 提取 BiliBili 视频的音频并推送。 
+Tool-Asoul-Music 是一个使用 Python 编写的自动化的音乐推送程序， 可以 本地运行，交互式机器人部署， 自动抓取 或 手动指定收藏夹Rss地址 提取 BiliBili 视频的音频并推送。
 在自动抓取模式下，程序可以打包数据推送备份。项目经过严格模块化重构，便于扩展。
-
 
 ## 特色
 
@@ -56,7 +54,9 @@ Tool-Asoul-Music 是一个使用 Python 编写的自动化的音乐推送程序�
 curl -LO https://raw.githubusercontent.com/sudoskys/Tool-Asoul-Music/main/setup.sh && sh setup.sh
 
 ```
+
 或者
+
 ```
 curl -LO https://raw.fastgit.org/sudoskys/Tool-Asoul-Music/main/setup.sh && sh setup.sh
 ```
@@ -103,15 +103,21 @@ ClientBot: { statu: False, owner: 'xxxxxxx' }
 - [1 -参数详情](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/search/search_request.md#%E5%88%86%E7%B1%BB%E6%90%9C%E7%B4%A2web%E7%AB%AF)
 - 2.请务必先start机器人对话
 
-
 #### 加密配置文件 Token 自助生成
+
 项目的 `docs/newToken.md` 中提供了生成的实例。
 
+### 运行
 
-运行请附带参数
+请附带参数
 
 ```shell
-python main.py IfYouSetPassword
+python main.py --p IfYouSetPassword --i True
+```
+
+```python
+parser.add_argument('--password', '-p', help='密码，非必要参数，只有配置开启才会使用')
+parser.add_argument('--init', '-i', help='是否执行数据初始化，避免大量推送', default=False)
 ```
 
 ### 部署推送服务
@@ -125,11 +131,9 @@ python main.py IfYouSetPassword
 channalId: -youchannalIDnumberhere
 ```
 
-
 **填充/初始化 数据**
 
 程序运行会自动初始化数据。
-
 
 ### 自动搜索模式
 
@@ -198,7 +202,6 @@ sys.path.insert(0, '/root/Tool-Asoul-Music')
 
 **记得在cron.sh里面修改密码**
 
-
 ### 部署交互式机器人
 
 **后台运行**
@@ -223,9 +226,7 @@ kill -9  进程号
 
 ### 滥用警告
 
-
 机器人每分钟在公开群组发送消息的频率不能超过 20/min,否则会被Telegram删除用户账户并销毁资料。
-
 
 ### Colab 调试
 
@@ -236,7 +237,6 @@ kill -9  进程号
 !python -m pip install --upgrade pip
 !pip3 install -r requirements.txt
 ```
-
 
 ### 目录结构描述
 
