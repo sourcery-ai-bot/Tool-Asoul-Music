@@ -44,7 +44,7 @@ Gitpull() {
 }
 
 pipInit() {
-  libs=(
+  libs={
     requests
     pyyaml==5.4.1
     pathlib
@@ -58,7 +58,7 @@ pipInit() {
     rich
     pycrypto
     joblib
-    )
+    }
   pip3 install --upgrade pip
   for i in "${libs[@]}"; do
     echo " ---------- 正在安装 ---------------> $i "
