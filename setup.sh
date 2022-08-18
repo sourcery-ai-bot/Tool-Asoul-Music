@@ -49,7 +49,7 @@ dependenceInit() {
     exit 1
   )
   pip3 install --upgrade pip
-  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt ||(echox green "失败！尝试跳过加密库";pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt.bak)|| echox red "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt ||(echox green "失败！尝试跳过加密库";pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt.bak)|| echox yellow "===pip install failed,please check it===== \n if you are in python3.10 please edit the requirements.txt,delete the pycrypto pkg"
   echox yellow "========Down=========="
 }
 dataBack="$(pwd)/tmp"
