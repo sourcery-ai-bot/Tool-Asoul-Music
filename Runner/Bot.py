@@ -6,7 +6,6 @@
 import os
 import shutil
 import time
-
 import joblib
 
 from Runner.DataParse import biliParse
@@ -126,4 +125,5 @@ class ClinetBot(object):
                             Tool().console.print("Bot已经关闭", style='blue')
                     else:
                         bot.reply_to(message, "服务维护中")
+
             bot.infinity_polling()
