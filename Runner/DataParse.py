@@ -157,8 +157,10 @@ class biliParse(object):
         bv = B + b
         for i in bv:
             Av.append(self.BV_AV(i))
-        a = re.findall(r"(?:av.*?).{9}", urls)
-        A = re.findall(r"(?:AV.*?).{9}", urls)
+        a = re.compile(r'(?:av)\d+\.?\d*').findall(urls)
+        A = re.compile(r'(?:AV)\d+\.?\d*').findall(urls)
+        # a = re.findall(r"(?:av.*?).{9}", urls)
+        # A = re.findall(r"(?:AV.*?).{9}", urls)
         deal = Av + a + A
         Bv = []
         for i in deal:
