@@ -10,6 +10,6 @@ search: { statu: False,
           data:
             { duration: '1', keyword: ASOUL 原创曲, order: pubdate, page: '1', search_type: video,  tids_1: '3', tids_2: '28' }
 }
-RSS : {statu: Fasle, RssAddressToken: 'https://rssxxxxxxxxxxxxxxxxx'}
+RSS : {statu: False,push: False, RssAddressToken: 'https://rssxxxxxxxxxxxxxxxxx'}
 DataCallback : {statu: False, UserIdToken: 'bxxxxxxxxxx79'}
 ClientBot :  {statu: False, owner: '527xxxxxx445'}

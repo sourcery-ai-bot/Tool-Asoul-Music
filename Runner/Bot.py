@@ -45,8 +45,8 @@ class ClinetBot(object):
             return False
 
     def run(self, pushService, config):
-        Tool().console.print("Bot Running", style='blue')
         if config.ClientBot.statu:
+            Tool().console.print("Bot Running", style='blue')
             import telebot
             import joblib
             bot = telebot.TeleBot(config.botToken)
