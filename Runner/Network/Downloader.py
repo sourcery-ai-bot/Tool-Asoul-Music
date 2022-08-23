@@ -10,11 +10,14 @@ import random
 from fake_useragent import UserAgent
 from PIL import Image
 from pathlib import Path
+
 ua_fake = UserAgent()
+
 
 class infoGet(object):
     def __init__(self):
         self.debug = False
+
         self.header = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Encoding': 'gzip, deflate',
@@ -25,8 +28,8 @@ class infoGet(object):
             'Connection': 'keep-alive',
             'Host': 'api.bilibili.com',
             'Upgrade-Insecure-Requests': '1',
-            'User-Agent': ua_fake.random, # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
-            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
+            'User-Agent': ua_fake.random,  # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
+            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQQB;ID=CgQv5QB0',
         }
 
     def getData(self, bvid):
@@ -93,8 +96,8 @@ class fileGet(object):
             'Connection': 'keep-alive',
             'Host': 'api.bilibili.com',
             # 'Upgrade-Insecure-Requests': '1',
-            'User-Agent': ua_fake.random, # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
-            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
+            'User-Agent': ua_fake.random,  # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
+            'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=Cg0',
 
             'Sec-Fetch-Dest': 'document',
             'Sec-Fetch-Mode': 'navigate',
@@ -160,9 +163,10 @@ class fileGet(object):
         if not audioSong.get("code") == 0:
             raise Exception("BiliBili Api 狐务器拒绝了请求！!... \n Detail:" + str(audioSong) + ' \n 目标Url:' + str(apiUrl))
         audioUrl = audioSong.get('data').get('dash')['audio'][0]['baseUrl']
+
         opener = urllib.request.build_opener()
         opener.addheaders = [
-            ('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0'),
+            ('User-Agent', ua_fake.random),
             ('Accept', '*/*'),
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
