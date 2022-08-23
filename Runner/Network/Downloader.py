@@ -151,6 +151,7 @@ class fileGet(object):
             "•",
             TimeRemainingColumn(),
         )
+
         baseUrl = 'http://api.bilibili.com/x/player/playurl?fnval=16&'
         if not os.path.exists(dirname):  # 创建为文件夹
             os.makedirs(dirname)
@@ -166,7 +167,7 @@ class fileGet(object):
 
         opener = urllib.request.build_opener()
         opener.addheaders = [
-            ('User-Agent', ua_fake.random),
+            ('User-Agent', "Mozilla/5.0 BiliDroid/6.82.0 (bbcallen@gmail.com)"),
             ('Accept', '*/*'),
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
