@@ -100,10 +100,13 @@ class checkRss(object):
                     print("RSS No New Data")
             except BaseException as arg:
                 try:
-                    pushService.sendMessage(config.channalId,
-                                            'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
+                    if not DontPush:
+                        pushService.sendMessage(config.channalId,
+                                                'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
+                    else:
+                        Tool().console.print(arg, style="red")
                 except BaseException as e:
-                    print("推送错误")
+                    print("推送日志时发生错误" + str(e))
                 # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))
             finally:
                 if not DontPush:

@@ -9,5 +9,6 @@ pydub
 mutagen
 pillow
 rich
-pycrypto
 joblib
+fake-useragent
+pycrypto

@@ -15,6 +15,19 @@ class rssParse(object):
             with open(path, 'w+') as f:
                 json.dump({}, f)
 
+    def well(self, name):
+        """
+        过滤非法字符
+        :param name:
+        :return: able use str
+        """
+        # import string
+        name = name.replace('"', '_')  # 消除目标对路径的干扰
+        name = name.replace("'", '_')
+        # remove = string.punctuation
+        table = str.maketrans(r'~!#$%^&,[]{}\/？?', '________________', "")
+        return name.translate(table)
+
     def setUrl(self, url, save):
         import feedparser
         fp = feedparser.parse(url)
@@ -23,12 +36,12 @@ class rssParse(object):
         for m in fp.entries:
             # print('T:',m.title)
             # print('U:',m.links[0].href)
-            name_list.append(m.title)
+            name_list.append(self.well(m.title))
             target_list.append(m.links[0].href)
         items = dict(zip(name_list, target_list))
         if save:
             with open(self.dataPath, 'w+') as f:
-                json.dump(items, f)
+                json.dump(items, f, indent=4, ensure_ascii=False)
         return items
 
     def getItem(self, url, Save=True):

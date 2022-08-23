@@ -41,7 +41,7 @@ ClinetBot().run(pushService, config)
 # ===== 推送型逻辑区 =====
 
 # Rss推送
-is_new_Rss = checkRss().run(pushService, config, DontPush=config.RSS.get("push"), dataInit=args.init)  # 本地推送且不开启填充数据测试
+is_new_Rss = checkRss().run(pushService, config, DontPush=config.RSS.get("DontPush"), dataInit=args.init)  # 本地推送且不开启填充数据测试
 
 # 自动搜索
 cat = searchBili(config)

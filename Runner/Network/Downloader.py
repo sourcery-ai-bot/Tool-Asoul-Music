@@ -7,9 +7,10 @@ import urllib
 import requests
 import random
 
+from fake_useragent import UserAgent
 from PIL import Image
 from pathlib import Path
-
+ua_fake = UserAgent()
 
 class infoGet(object):
     def __init__(self):
@@ -20,16 +21,16 @@ class infoGet(object):
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
             'Cache-Control': 'max-age=0',
             'DNT': '1',
-            'Referer': 'https://api.bilibili.com/',
+            'Referer': 'http://api.bilibili.com/',
             'Connection': 'keep-alive',
             'Host': 'api.bilibili.com',
             'Upgrade-Insecure-Requests': '1',
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
+            'User-Agent': ua_fake.random, # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
             'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
         }
 
     def getData(self, bvid):
-        url = 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid
+        url = 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid
         data = requests.get(url=url, headers=self.header).json().get("data")
         if not data:
             raise Exception("Api 访问异常... Detail:" + str(data))
@@ -64,7 +65,7 @@ class infoGet(object):
         return infoList
 
     def getMutipleInformation(self, bvid):
-        url = 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid
+        url = 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid
         data = requests.get(url).json().get('data')
         # base_title = data['title']
         infoList = []
@@ -88,11 +89,11 @@ class fileGet(object):
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.5',
             'Cache-Control': 'max-age=0',
             'DNT': '1',
-            'Referer': 'https://api.bilibili.com/',
+            'Referer': 'http://api.bilibili.com/',
             'Connection': 'keep-alive',
             'Host': 'api.bilibili.com',
             # 'Upgrade-Insecure-Requests': '1',
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
+            'User-Agent': ua_fake.random, # 'Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0',
             'Cookie': '1P_JAR=2022-02-09-02;SEARCH_SAMESITE=CgQIv5QB;ID=CgQIsv5QB0',
 
             'Sec-Fetch-Dest': 'document',
@@ -147,7 +148,7 @@ class fileGet(object):
             "•",
             TimeRemainingColumn(),
         )
-        baseUrl = 'https://api.bilibili.com/x/player/playurl?fnval=16&'
+        baseUrl = 'http://api.bilibili.com/x/player/playurl?fnval=16&'
         if not os.path.exists(dirname):  # 创建为文件夹
             os.makedirs(dirname)
         # st = time.time()
@@ -166,11 +167,11 @@ class fileGet(object):
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
             ('Range', 'bytes=0-'),
-            ('Referer', 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid),  # referer 验证
+            ('Referer', 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid),  # referer 验证
             ('Origin', 'https://www.bilibili.com'),
             ('Connection', 'keep-alive'),
         ]
-        MusicName = os.path.join(dirname, title + '.mp3')
+        MusicName = os.path.join(dirname, self.well(title) + '.mp3')
         if not Path(MusicName + '.flac').exists():
             if int(audioSong.get('data').get("timelength")) > 360000:
                 is_too_lang = True
@@ -257,7 +258,7 @@ class fileGet(object):
         :return:
         """
         """
-        baseUrl = 'https://api.bilibili.com/x/web-interface/view?'
+        baseUrl = 'http://api.bilibili.com/x/web-interface/view?'
         if not os.path.exists(dirname):  # 创建为文件夹
             os.makedirs(dirname)
         # st = time.time()
@@ -276,7 +277,7 @@ class fileGet(object):
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
             ('Range', 'bytes=0-'),
-            ('Referer', 'https://api.bilibili.com/x/web-interface/view?bvid=' + bvid),  # referer 验证
+            ('Referer', 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid),  # referer 验证
             ('Origin', 'https://www.bilibili.com'),
             ('Connection', 'keep-alive'),
         ]
@@ -289,7 +290,7 @@ class fileGet(object):
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
             ('Range', 'bytes=0-'),
-            ('Referer', 'https://api.bilibili.com/x/web-interface/view?bvid=' + item[0]),  # referer 验证
+            ('Referer', 'http://api.bilibili.com/x/web-interface/view?bvid=' + item[0]),  # referer 验证
             ('Origin', 'https://www.bilibili.com'),
             ('Connection', 'keep-alive'),
         ]
