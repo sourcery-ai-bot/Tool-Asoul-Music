@@ -1,4 +1,4 @@
-![a](https://s1.328888.xyz/2022/04/13/fPSGZ.jpg)
+![a](https://raw.githubusercontent.com/sudoskys/sudoskys/main/love.jpeg)
 
 ------------------------------------
 
