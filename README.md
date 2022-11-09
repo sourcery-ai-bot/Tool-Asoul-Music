@@ -6,7 +6,7 @@
   <a href="https://img.shields.io/badge/LICENSE-Apache2-ff69b4"><img alt="License" src="https://img.shields.io/badge/LICENSE-Apache2-ff69b4"></a>
   <img src="https://img.shields.io/badge/USE-python-green" alt="PYTHON" >
   <img src="https://img.shields.io/badge/Version-220415-9cf" alt="V" >
-  <a href="https://dun.mianbaoduo.com/@Sky0717"><img src="https://img.shields.io/badge/Become-sponsor-DB94A2" alt="SPONSOR"></a>
+  <a href="https://azz.net/ly233"><img src="https://img.shields.io/badge/Become-sponsor-DB94A2" alt="SPONSOR"></a>
 </p>
 
 
@@ -298,5 +298,5 @@ https://blog.csdn.net/qq_35756383/article/details/109135720
 
 如果你感觉这对你有帮助，可以试着我赞助我一点～
 
-[![s](https://img.shields.io/badge/Become-sponsor-DB94A2)](https://dun.mianbaoduo.com/@Sky0717)
+[![s](https://img.shields.io/badge/Become-sponsor-DB94A2)](https://azz.net/ly233)
 
