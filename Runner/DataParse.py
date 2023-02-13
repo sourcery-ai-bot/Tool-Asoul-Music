@@ -51,12 +51,10 @@ class rssParse(object):
         newer = self.setUrl(url, Save)
         if len(older) == 0:
             return newer
-        else:
-            result_key = newer.keys() - older.keys()
-            result = {name: value for name, value in newer.items() if name in result_key}
-            if not result:
-                result = {}
-            return result
+        result_key = newer.keys() - older.keys()
+        return {
+            name: value for name, value in newer.items() if name in result_key
+        } or {}
 
     def getFullItem(self, url, Save=False):
         return self.setUrl(url, Save)
@@ -87,11 +85,7 @@ class biliParse(object):
     def timestamp_datetime(self, value):
         formats = r'%Y-%m-%d %H:%M:%S'
         value = time.localtime(value)
-        # 经过localtime转换后变成''' time.struct_time(tm_year=2012, tm_mon=3, tm_mday=28, tm_hour=6, tm_min=53, tm_sec=40,
-        # tm_wday=2, tm_yday=88, tm_isdst=0)
-        # 最后再经过strftime函数转换为正常日期格式。
-        dt = time.strftime(formats, value)
-        return dt
+        return time.strftime(formats, value)
 
     def get_oid_type(self, bili_id, bili_type):
         if bili_type == 0:
@@ -110,23 +104,17 @@ class biliParse(object):
         bv_id = bv_id.replace('/', '')
         """ BV号还原AV号 """
         table = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
-        tr = {}
-        for i in range(58):
-            tr[table[i]] = i
+        tr = {table[i]: i for i in range(58)}
         s = [11, 10, 3, 8, 4, 6]
         xor = 177451812
         add = 8728348608
-        r = 0
-        for i in range(6):
-            r += tr[bv_id[s[i]]] * 58 ** i
+        r = sum(tr[bv_id[s[i]]] * 58 ** i for i in range(6))
         return (r - add) ^ xor
 
     def AV_BV(self, av):
         av = "".join(list(filter(str.isdigit, str(av))))
         Str = 'fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF'
-        Dict = {}
-        for i in range(58):
-            Dict[Str[i]] = i
+        Dict = {Str[i]: i for i in range(58)}
         s = [11, 10, 3, 8, 4, 6, 2, 9, 5, 7]
         xor = 177451812
         add = 100618342136696320
@@ -140,8 +128,7 @@ class biliParse(object):
 
     def add_url(self, b_oid, b_type):
         """ 拼接url or https://api.bilibili.com/x/v2/reply?&type={}&oid={}&pn={} """
-        return_url = f"https://api.bilibili.com/x/v2/reply/main?&type={b_type}&oid={b_oid}&next="
-        return return_url
+        return f"https://api.bilibili.com/x/v2/reply/main?&type={b_type}&oid={b_oid}&next="
 
     def get_bili_id(self, bili_url):
         """ 判断传入链接的类型,并获取id """
@@ -149,13 +136,13 @@ class biliParse(object):
         list_re = re.split("/", url_re)
         url_text_re = list_re[len(list_re) - 1]
         # print(url_text_re)  # re 的链接！！
-        bili_id_tf = [True if tf in url_text_re else False for tf in ["?", "#"]]
+        bili_id_tf = [tf in url_text_re for tf in ["?", "#"]]
         bili_id = re.findall(r".+?[?|#]", url_text_re)[0][:-1] if any(bili_id_tf) else url_text_re
-        if bili_id[0:2] == "cv" or len(list(bili_id)) < 9:  # 判断专栏
-            bili_id = bili_id[2:] if bili_id[0:2] == "cv" else bili_id
+        if bili_id[:2] == "cv" or len(list(bili_id)) < 9:  # 判断专栏
+            bili_id = bili_id[2:] if bili_id[:2] == "cv" else bili_id
             bili_type = 2
         else:  # 判断动态或视频
-            bili_type = 0 if bili_id[0:2] == "BV" else 1
+            bili_type = 0 if bili_id[:2] == "BV" else 1
         # print(bili_id) # id在这里
         """ 0.视频 1.动态 2.专栏 """
 
@@ -164,30 +151,22 @@ class biliParse(object):
     def biliIdGet(self, urls):
         # urls = self.b32_url(urls) if "b23.tv" in urls else urls
         urls = self.b32_url(urls) if "b23.tv" in urls else urls
-        Av = []
         b = re.findall(r'(?:bv.*?).{10}', urls)
         B = re.findall(r'(?:BV.*?).{10}', urls)
         bv = B + b
-        for i in bv:
-            Av.append(self.BV_AV(i))
+        Av = [self.BV_AV(i) for i in bv]
         a = re.compile(r'(?:av)\d+\.?\d*').findall(urls)
         A = re.compile(r'(?:AV)\d+\.?\d*').findall(urls)
         # a = re.findall(r"(?:av.*?).{9}", urls)
         # A = re.findall(r"(?:AV.*?).{9}", urls)
         deal = Av + a + A
-        Bv = []
-        for i in deal:
-            Bv.append(self.AV_BV(i))
-        ids = Bv
-        # print(ids)
-        if ids:
-            for i in ids:
-                strs = re.search(r"\W", str(i))
-                if strs:
-                    ids = False
-            return list(set(ids))
-        else:
+        Bv = [self.AV_BV(i) for i in deal]
+        if not (ids := Bv):
             return False
+        for i in ids:
+            if strs := re.search(r"\W", str(i)):
+                ids = False
+        return list(set(ids))
 
 
 class AESlock(object):

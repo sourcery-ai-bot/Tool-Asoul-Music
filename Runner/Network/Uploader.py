@@ -30,7 +30,7 @@ class Upload(object):
         ath = str(Path().cwd()) + savePath
         for item in infoList:
             # print('Downloader Start!')
-            sath = ath + "/" + item[0]
+            sath = f"{ath}/{item[0]}"
             # st = time.time()
             DownPath, is_too_lang = fileGet().getAudio(item, sath)
             if not is_too_lang:
@@ -41,9 +41,8 @@ class Upload(object):
                     try:
                         botService.postAudio(tarID, convertPath, title + '\n' + 'https://www.bilibili.com/video/' + str(
                             bvid) + "\n #MusicConvert " + str(self.desc), title)  # +
-                    # '\nSync  ' + '<a href="' + syncurl + '">link here</a>', mtitle)
                     except Exception as e:
-                        raise Exception("Cant post" + str(e))
+                        raise Exception(f"Cant post{str(e)}")
                 # ed = time.time()
                 # print('Download Finish! Time consuming:',str(round(ed-st,2))+' seconds')
 
@@ -114,26 +113,18 @@ class Robot(object):
 
     def postDoc(self, objectID, files):
         if Path(str(files)).exists():
-            doc = open(files, 'rb')
-            self.BOT.send_document(objectID, doc)
-            doc.close()
+            with open(files, 'rb') as doc:
+                self.BOT.send_document(objectID, doc)
             return files
 
     def postVideo(self, objectID, files, source, name):
         if Path(str(files)).exists():
-            video = open(files, 'rb')
-            self.BOT.send_video(objectID, video, source, name, name)
-            # '#音乐MV #AUTOrunning '+str(source)+"   "+name
-            # 显示要求为MP4--https://mlog.club/article/5018822
-            # print("============Already upload this video============")
-            video.close()
+            with open(files, 'rb') as video:
+                self.BOT.send_video(objectID, video, source, name, name)
             return files
 
     def postAudio(self, objectID, files, source, name):
         if Path(str(files)).exists():
-            audio = open(files, 'rb')
-            self.BOT.send_audio(objectID, audio, source, name, name)
-            # '#音乐提取 #AUTOrunning '+str(source)+"   "+name
-            # print("============ALready upload this flac============")
-            audio.close()
+            with open(files, 'rb') as audio:
+                self.BOT.send_audio(objectID, audio, source, name, name)
             return files

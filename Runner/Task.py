@@ -22,30 +22,27 @@ class apiRenew(object):
 
     def clearTask(self, files):
         m = Path('rank/waiter/init.lck')
-        file_list = [path for path in m.glob('*.yaml')]
+        file_list = list(m.glob('*.yaml'))
         try:
-            for i, k in enumerate(file_list):
+            for k in file_list:
                 Path(k).unlink()
             Path("rank/content.yaml").unlink()
         except Exception as err:
             print(err)
-        else:
-            pass
 
     def raiseTask(self, data):
         import time
         times = str(time.strftime("%Y%m%d%H%M", time.localtime()))
-        yamler().save("rank/waiter/" + times + ".yaml", data)
+        yamler().save(f"rank/waiter/{times}.yaml", data)
         info = yamler().read("rank/content.yaml")
         if not info:
             info = {}
-        info[times] = ("rank/waiter/" + times + ".yaml")
+        info[times] = f"rank/waiter/{times}.yaml"
         yamler().save("rank/content.yaml", info)
         return times
 
     def cancelTask(self, keys):
-        lists = yamler().read("rank/content.yaml")
-        if lists:
+        if lists := yamler().read("rank/content.yaml"):
             if lists.get(keys):
                 m = Path(lists.get(keys))
                 if m.is_file():
@@ -73,7 +70,7 @@ class apiRenew(object):
             older = {}
         if isinstance(newer, dict):
             # logging.debug(older)
-            if len(list(older)) != 0:
+            if list(older):
                 deal = {i: newer.get(i) for i in newer.keys() if i not in older.keys()}
                 # total = older.update(newer)
                 total = {**older, **newer}
@@ -116,28 +113,24 @@ class apiRenew(object):
                         # logging.debug(res)
                         result = {}
                         for index, item in enumerate(res):
-                            video_object = {}
                             title = item.get("title")
                             titles = title.replace('<em class="keyword">', '').replace('</em>', '')
                             char = '\:*?"<>|/'
                             for acao in char:
                                 titles = titles.replace(acao, "_")
-                            # logging.debug(titles)
-                            video_object['title'] = titles
-                            video_object['bvid'] = item.get("bvid")
+                            video_object = {'title': titles, 'bvid': item.get("bvid")}
                             video_object['review'] = item.get("review")
                             video_object['favorites'] = item.get("favorites")
                             video_object['play'] = item.get("play")
                             video_object['like'] = item.get("like")
                             video_object['tag'] = item.get("tag")
                             if video_object['title'].find("原创曲") != -1 or video_object['tag'].find("原创歌曲") != -1 or \
-                                    video_object['tag'].find("原创曲") != -1 or video_object['play'] > 20000 or \
-                                    video_object['favorites'] * 5 > video_object['like']:
+                                        video_object['tag'].find("原创曲") != -1 or video_object['play'] > 20000 or \
+                                        video_object['favorites'] * 5 > video_object['like']:
                                 result[video_object['bvid']] = video_object
                                 # return result
-                            else:
-                                if video_object['favorites'] > 1000:
-                                    result[video_object['bvid']] = video_object
+                            elif video_object['favorites'] > 1000:
+                                result[video_object['bvid']] = video_object
                         # logger.debug
                         print(result)
                         return result
@@ -147,14 +140,14 @@ class apiRenew(object):
                         return False
                 else:
                     # logger.info
-                    print("NO data" + str(json_dict))
+                    print(f"NO data{str(json_dict)}")
                     self.END = True
                     return False
             else:
                 # logger.debug
-                print("NO Data Code" + str(json_dict))
+                print(f"NO Data Code{str(json_dict)}")
                 return False
         else:
             # logger.debug
-            print("NET CODE  " + str(response.status_code))
+            print(f"NET CODE  {str(response.status_code)}")
             return False

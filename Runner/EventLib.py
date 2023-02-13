@@ -18,59 +18,49 @@ class searchBili(object):
         if self.config.search.statu:
             # 查询
             result = apiRenew().apiInit(self.config.search.data)
-            # 注册
-            key = apiRenew().doData(result)
-            if key:
+            if key := apiRenew().doData(result):
                 # 注册成功
-                print('resign new task--> ' + key)
+                print(f'resign new task--> {key}')
                 # apiRenew().cancelTask(key)  # 取消任务
 
     def doTask(self, push, dataInit=False):
         HaveNew = False
         from Runner.Task import apiRenew
         from Runner.Network.Uploader import Upload
-        task = yamler().read("rank/content.yaml")
-        # 得到任务
-        if task:
-            for i, k in enumerate(task):
+        if task := yamler().read("rank/content.yaml"):
+            for k in task:
                 task_todo = yamler().read(task.get(k))
 
-                # mian(lme, ath, k)
                 if not all([self.config.botToken, self.config.channalId]):
                     raise Exception("参数不全!")
-                else:
-                    Path(os.getcwd() + '/music/').mkdir(parents=True, exist_ok=True)
+                Path(f'{os.getcwd()}/music/').mkdir(parents=True, exist_ok=True)
                     # sync = onedrive(apptoken, appid, appkey)
-                    if not task_todo:
-                        print("Tasker nothing to do")
+                if not task_todo:
+                    print("Tasker nothing to do")
+                    apiRenew().cancelTask(k)
+                else:
+                    HaveNew = True
+                    # print(task_todo)
+                    # print(type(task_todo))
+                    # 传入
+                    bvlist = []
+                    if isinstance(task_todo, dict):
+                        bvlist.extend(iter(task_todo))
+                    time.sleep(1)
+                    try:
+                        if not dataInit:
+                            Upload(self.config.desc).deal_audio_list(self.config.channalId, bvlist, '/music', push,
+                                                                     local=False)
+                    except BaseException as arg:
+                        if not bvlist:
+                            bvlist = 'Unknow'
+                        push.sendMessage(f'Failed post {str(bvlist)}' + '\n Exception:' + str(arg))
+                                            # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(bvlist) + "\n" + str(arg))
+                                            # mLog("err", "Fail " + n + '  -' + u).wq()
+                    else:
                         apiRenew().cancelTask(k)
                         # sync.lock_token()
-                        shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
-                    else:
-                        HaveNew = True
-                        # print(task_todo)
-                        # print(type(task_todo))
-                        # 传入
-                        bvlist = []
-                        if isinstance(task_todo, dict):
-                            for n, u in enumerate(task_todo):
-                                # bv = str(task_todo.get(u).get("bvid"))
-                                bvlist.append(u)
-                        time.sleep(1)
-                        try:
-                            if not dataInit:
-                                Upload(self.config.desc).deal_audio_list(self.config.channalId, bvlist, '/music', push,
-                                                                         local=False)
-                        except BaseException as arg:
-                            if not bvlist:
-                                bvlist = 'Unknow'
-                            push.sendMessage('Failed post ' + str(bvlist) + '\n Exception:' + str(arg))
-                            # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(bvlist) + "\n" + str(arg))
-                            # mLog("err", "Fail " + n + '  -' + u).wq()
-                        else:
-                            apiRenew().cancelTask(k)
-                        # sync.lock_token()
-                        shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除存储的视频文件
+                shutil.rmtree(f'{os.getcwd()}/music/', ignore_errors=False, onerror=None)
         return HaveNew
 
 
@@ -84,14 +74,15 @@ class checkRss(object):
         from Runner.Network.Uploader import Upload
         if config.RSS.statu:
             Tool().console.print("RSS启用中", style='blue')
-            Path(os.getcwd() + '/music/').mkdir(parents=True, exist_ok=True)
-            items = rssParse(path=os.getcwd() + '/data/RssData.json').getItem(config.RSS.RssAddressToken)
+            Path(f'{os.getcwd()}/music/').mkdir(parents=True, exist_ok=True)
+            items = rssParse(path=f'{os.getcwd()}/data/RssData.json').getItem(
+                config.RSS.RssAddressToken
+            )
             rssBvidItem = []
             if items:
-                for k, v in items.items():
-                    rssBvidItem.append(biliParse().biliIdGet(str(v))[0])
+                rssBvidItem.extend(biliParse().biliIdGet(str(v))[0] for k, v in items.items())
             try:
-                if not len(rssBvidItem) == 0:
+                if rssBvidItem:
                     HaveNew = True
                     if not dataInit:
                         Upload(config.desc).deal_audio_list(config.channalId, rssBvidItem, '/music', pushService,
@@ -101,17 +92,21 @@ class checkRss(object):
             except BaseException as arg:
                 try:
                     if not DontPush:
-                        pushService.sendMessage(config.channalId,
-                                                'Failed post ' + str(rssBvidItem) + '\n Exception:' + str(arg))
+                        pushService.sendMessage(
+                            config.channalId,
+                            f'Failed post {rssBvidItem}'
+                            + '\n Exception:'
+                            + str(arg),
+                        )
                     else:
                         Tool().console.print(arg, style="red")
                 except BaseException as e:
-                    print("推送日志时发生错误" + str(e))
-                # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))
+                    print(f"推送日志时发生错误{str(e)}")
+                        # WrongGet.append(str(Nowtime) + '\n 任务错误' + str(rssBvidItem) + str(arg))
             finally:
                 if not DontPush:
-                    shutil.rmtree(os.getcwd() + '/music/', ignore_errors=False, onerror=None)  # 删除
-                # mLog("err", "Fail " + n + '  -' + u).wq()
+                    shutil.rmtree(f'{os.getcwd()}/music/', ignore_errors=False, onerror=None)
+                        # mLog("err", "Fail " + n + '  -' + u).wq()
 
         else:
             Tool().console.print("RSS已经关闭", style='blue')
@@ -183,18 +178,16 @@ class Read(object):
                 self.config.Lock = False
 
         # 解密 rss 地址
-        if self.config.RSS.statu:
-            if self.config.Lock:
-                from Runner.DataParse import AESlock
-                self.config.RSS.RssAddressToken = AESlock().decrypt(str(self.keyword),
-                                                                    self.config.RSS.RssAddressToken.encode('utf-8'))
+        if self.config.RSS.statu and self.config.Lock:
+            from Runner.DataParse import AESlock
+            self.config.RSS.RssAddressToken = AESlock().decrypt(str(self.keyword),
+                                                                self.config.RSS.RssAddressToken.encode('utf-8'))
         # 解密备份发送到的人的ID
-        if self.config.DataCallback.statu:
-            if self.config.Lock:
-                from Runner.DataParse import AESlock
-                self.config.DataCallback.UserIdToken = AESlock().decrypt(str(self.keyword),
-                                                                         self.config.DataCallback.UserIdToken.encode(
-                                                                             'utf-8'))
+        if self.config.DataCallback.statu and self.config.Lock:
+            from Runner.DataParse import AESlock
+            self.config.DataCallback.UserIdToken = AESlock().decrypt(str(self.keyword),
+                                                                     self.config.DataCallback.UserIdToken.encode(
+                                                                         'utf-8'))
         return self.config
 
 
@@ -203,7 +196,9 @@ class feedBack(object):
     def run(config, pushService):
         if config.DataCallback.statu:
             try:
-                filePath = doTarGz().mkTarAll(os.getcwd() + '/' + '-dataBack.tar.gz', os.getcwd() + "/data")
+                filePath = doTarGz().mkTarAll(
+                    f'{os.getcwd()}/-dataBack.tar.gz', f"{os.getcwd()}/data"
+                )
                 pushService.postDoc(config.DataCallback.UserIdToken, filePath)
             except BaseException as arg:
                 print("Fail:数据备份推送执行失败")
@@ -230,12 +225,11 @@ class yamler(object):
         Path(top).unlink()
 
     def read(self, path):
-        if Path(path).exists():
-            with open(path, 'r', encoding='utf-8') as f:
-                result = yaml.full_load(f.read())
-            return result
-        else:
-            raise Exception("Config dont exists in" + path)
+        if not Path(path).exists():
+            raise Exception(f"Config dont exists in{path}")
+        with open(path, 'r', encoding='utf-8') as f:
+            result = yaml.full_load(f.read())
+        return result
 
     def save(self, path, Data):
         with open(path, 'w+', encoding='utf-8') as f:
@@ -298,10 +292,8 @@ class doTarGz(object):
         import tarfile
         tar = tarfile.open(file_name)
         names = tar.getnames()
-        if os.path.isdir(file_name + "_files"):
-            pass
-        else:
-            os.mkdir(file_name + "_files")
+        if not os.path.isdir(f"{file_name}_files"):
+            os.mkdir(f"{file_name}_files")
         for name in names:
-            tar.extract(name, file_name + "_files/")
+            tar.extract(name, f"{file_name}_files/")
         tar.close()

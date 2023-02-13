@@ -33,11 +33,11 @@ class infoGet(object):
         }
 
     def getData(self, bvid):
-        url = 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid
-        data = requests.get(url=url, headers=self.header).json().get("data")
-        if not data:
-            raise Exception("Api 访问异常... Detail:" + str(data))
-        return data
+        url = f'http://api.bilibili.com/x/web-interface/view?bvid={bvid}'
+        if data := requests.get(url=url, headers=self.header).json().get("data"):
+            return data
+        else:
+            raise Exception(f"Api 访问异常... Detail:{str(data)}")
 
     def getCidAndTitle(self, ciddata, p=1):
         title = ciddata['title']
@@ -56,11 +56,7 @@ class infoGet(object):
                 data = self.getData(bvid[:12], int(bvid[13:]))
                 cid, title = self.getCidAndTitle(data)
                 item.append(bvid[:12])
-            item.append(cid)
-            item.append(title)  # 2
-            item.append(data.get("owner")["name"])
-            item.append(data.get("pic"))
-
+            item.extend((cid, title, data.get("owner")["name"], data.get("pic")))
             # item.append('mool_' + str(id + 1))
             infoList.append(item)
         # print(infoList)
@@ -68,7 +64,7 @@ class infoGet(object):
         return infoList
 
     def getMutipleInformation(self, bvid):
-        url = 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid
+        url = f'http://api.bilibili.com/x/web-interface/view?bvid={bvid}'
         data = requests.get(url).json().get('data')
         # base_title = data['title']
         infoList = []
@@ -157,11 +153,11 @@ class fileGet(object):
             os.makedirs(dirname)
         # st = time.time()
         bvid, cid, title = item[0], item[1], item[2]
-        apiUrl = baseUrl + 'bvid=' + bvid + '&cid=' + cid
+        apiUrl = f'{baseUrl}bvid={bvid}&cid={cid}'
         # print(title + '---' + str(bvid) + '---->' + apiUrl)
         title = self.well(title)
         audioSong = requests.get(url=apiUrl, headers=self.header).json()
-        if not audioSong.get("code") == 0:
+        if audioSong.get("code") != 0:
             raise Exception("BiliBili Api 狐务器拒绝了请求！!... \n Detail:" + str(audioSong) + ' \n 目标Url:' + str(apiUrl))
         audioUrl = audioSong.get('data').get('dash')['audio'][0]['baseUrl']
 
@@ -172,12 +168,15 @@ class fileGet(object):
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
             ('Range', 'bytes=0-'),
-            ('Referer', 'http://api.bilibili.com/x/web-interface/view?bvid=' + bvid),  # referer 验证
+            (
+                'Referer',
+                f'http://api.bilibili.com/x/web-interface/view?bvid={bvid}',
+            ),
             ('Origin', 'https://www.bilibili.com'),
             ('Connection', 'keep-alive'),
         ]
-        MusicName = os.path.join(dirname, self.well(title) + '.mp3')
-        if not Path(MusicName + '.flac').exists():
+        MusicName = os.path.join(dirname, f'{self.well(title)}.mp3')
+        if not Path(f'{MusicName}.flac').exists():
             if int(audioSong.get('data').get("timelength")) > 360000:
                 is_too_lang = True
             else:
@@ -204,9 +203,8 @@ class fileGet(object):
                 # print(str(round(ed-st,2))+' seconds download finish:',title)
                 self.random_sleep()
         else:
-            MusicName = MusicName + '.flac'
+            MusicName = f'{MusicName}.flac'
             is_too_lang = False
-            pass
         return MusicName, is_too_lang
 
     def convertAudio(self, item, audio_path, dirname, setCover=True):
@@ -218,7 +216,7 @@ class fileGet(object):
         channels = movie.channels  # 声道数
         # sample_width = movie.sample_width  # 采样大小
         frame_rate = movie.frame_rate  # 帧率
-        musicPath = audio_path + '.flac'
+        musicPath = f'{audio_path}.flac'
         if not Path(musicPath).exists():
             movie.export(musicPath, format="flac",
                          parameters=["-ac", str(channels), "-ar", str(frame_rate)])
@@ -242,10 +240,7 @@ class fileGet(object):
         image = Picture()
         image.type = 3
         # if  os.path.splitext(albumart)[-1][1:]==('png'):
-        if ".png" in CoverPath:
-            mime = 'image/png'
-        else:
-            mime = 'image/jpeg'
+        mime = 'image/png' if ".png" in CoverPath else 'image/jpeg'
         image.desc = 'front cover'
         with open(CoverPath, 'rb') as f:  # better than open(albumart, 'rb').read() ?
             image.data = f.read()
@@ -290,22 +285,28 @@ class fileGet(object):
         coverUrl = str(item[4])
         opener = urllib.request.build_opener()
         opener.addheaders = [
-            ('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0'),
+            (
+                'User-Agent',
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0',
+            ),
             ('Accept', '*/*'),
             ('Accept-Language', 'en-US,en;q=0.5'),
             ('Accept-Encoding', 'gzip, deflate, br'),
             ('Range', 'bytes=0-'),
-            ('Referer', 'http://api.bilibili.com/x/web-interface/view?bvid=' + item[0]),  # referer 验证
+            (
+                'Referer',
+                f'http://api.bilibili.com/x/web-interface/view?bvid={item[0]}',
+            ),
             ('Origin', 'https://www.bilibili.com'),
             ('Connection', 'keep-alive'),
         ]
         urllib.request.install_opener(opener)
-        picPath = os.path.join(dirname, item[0] + '.jpg')
+        picPath = os.path.join(dirname, f'{item[0]}.jpg')
         urllib.request.urlretrieve(url=coverUrl, filename=picPath)
-        Cover = picPath + "_cover.png"
+        Cover = f"{picPath}_cover.png"
         img = Image.open(picPath)
         img_size = img.size
-        cutSize = img_size[0] if (img_size[0] < img_size[1]) else img_size[1]
+        cutSize = min(img_size[0], img_size[1])
         if img_size[0] > img_size[1]:  # 宽比高长
             startX = int((img_size[0] - img_size[1]) / 2)  # 计算中间的位置
             cropped = img.crop((startX, 0, cutSize + startX, cutSize))  # (left, upper, right, lower)
@@ -330,7 +331,7 @@ class fileGet(object):
         audio["ALBUM"] = item[3]
         audio["YEAR"] = str(2022)
         # audio["DESCRIPTION"] = '::> Don\'t believe the hype! <::'
-        if len(encoding) != 0:
+        if encoding != "":
             audio["ENCODING"] = encoding
         audio.pprint()
         try:
